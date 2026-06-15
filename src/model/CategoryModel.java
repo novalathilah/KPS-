@@ -9,5 +9,17 @@ package model;
  * @author reysa eka
  */
 public class CategoryModel {
+    private int idCategory;
+    private String namaCategory;
+    private String tipe;
+
+    public int getIdCategory() {
+        return idCategory;
+    }
+
     
 }
+
+
+
+

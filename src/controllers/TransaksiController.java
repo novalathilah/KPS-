@@ -1,13 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controllers;
 
-/**
- *
- * @author reysa eka
+import model.TransaksiModel;
+import service.TransaksiService;
+
+/*
+ * Controller berfungsi sebagai penghubung
+ * antara View dan Service.
  */
 public class TransaksiController {
-    
+
+    private final TransaksiService service =
+            new TransaksiService();
+
+    /*
+     * Method simpan digunakan untuk meneruskan
+     * data transaksi dari form ke Service
+     */
+    public boolean simpan(TransaksiModel transaksi) {
+
+        return service.tambahTransaksi(transaksi);
+
+    }
 }

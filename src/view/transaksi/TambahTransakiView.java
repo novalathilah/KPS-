@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view.transaksi;
+import controllers.TransaksiController;
+import model.TransaksiModel;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -47,7 +51,12 @@ public class TambahTransakiView extends javax.swing.JFrame {
 
         jLabel3.setText("Category :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gaji", "Bonus", "Makan", "Transportasi", "Internet" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "makan" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Jumlah :");
 
@@ -64,6 +73,11 @@ public class TambahTransakiView extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton1.setText("Simpan");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,8 +90,8 @@ public class TambahTransakiView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, 120, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1))
                         .addGap(66, 66, 66)
@@ -124,6 +138,85 @@ public class TambahTransakiView extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        /*
+ * Event tombol Simpan
+ * Digunakan untuk mengambil data dari form,
+ * kemudian menyimpannya ke database.
+ */
+
+    try {
+
+        // Membuat objek transaksi baru
+        TransaksiModel transaksi =
+                new TransaksiModel();
+
+        // Mengisi data transaksi dari form
+        transaksi.setIdUser(2);
+
+        transaksi.setIdCategory(
+                Integer.parseInt(
+                        jComboBox1.getSelectedItem().toString()
+                )
+        );
+
+        transaksi.setJumlah(
+                Double.parseDouble(
+                        jTextField1.getText()
+                )
+        );
+
+        transaksi.setDeskripsi(
+                jTextArea1.getText()
+        );
+
+        transaksi.setTanggal(
+                new java.sql.Date(
+                        jDateChooser1.getDate().getTime()
+                )
+        );
+
+        // Memanggil controller
+        TransaksiController controller =
+                new TransaksiController();
+
+        if (controller.simpan(transaksi)) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Data berhasil disimpan"
+            );
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Data gagal disimpan"
+            );
+
+        }
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                e.getMessage()
+        );
+
+    }
+
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        
+    
+        
+        
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
