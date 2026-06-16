@@ -198,7 +198,7 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-          String keyword = jTextField1.getText().trim();
+        String keyword = jTextField1.getText().trim();
         if (keyword.isEmpty()) {
             loadData();
         } else {
@@ -207,7 +207,7 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {
-         try {
+        try {
             int baris = jTable1.getSelectedRow();
             if (baris == -1) {
                 JOptionPane.showMessageDialog(this, "Pilih data yang akan dihapus!");
@@ -231,7 +231,7 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
-       openEditForm();
+         openEditForm();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -306,7 +306,6 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-          // DOUBLE CLICK untuk Edit
         if (evt.getClickCount() == 2) {
             openEditForm();
         }
@@ -318,7 +317,9 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
+        refreshTable();
+        jTextField1.setText("");
+        JOptionPane.showMessageDialog(this, "Data berhasil direfresh!");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
