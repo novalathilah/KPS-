@@ -5,9 +5,9 @@
 package CategoryView;
 
 import controllers.CategoryController;
-import model.CategoryModel;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
+
 /**
  *
  * @author reysa eka
@@ -22,7 +22,7 @@ public class EditCategoryView extends javax.swing.JFrame {
         categoryController = new CategoryController();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
+
         jComboBox1.removeAllItems();
         jComboBox1.addItem("Pemasukan");
         jComboBox1.addItem("Pengeluaran");
@@ -33,7 +33,6 @@ public class EditCategoryView extends javax.swing.JFrame {
         jTextField1.setText(namaCategory);
         jComboBox1.setSelectedItem(tipe);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.

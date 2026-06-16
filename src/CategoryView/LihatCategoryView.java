@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  * @author HP
  */
 public class LihatCategoryView extends javax.swing.JFrame {
-    
+
     private CategoryController categoryController;
     private CategoryService categoryService;
 
@@ -26,15 +26,15 @@ public class LihatCategoryView extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         loadData();
     }
-    
+
     private void loadData() {
         categoryService.tampilData(jTable1);
     }
-    
+
     private void refreshTable() {
         categoryService.tampilData(jTable1);
     }
-    
+
     private void openEditForm() {
         int baris = jTable1.getSelectedRow();
         if (baris == -1) {
@@ -43,11 +43,11 @@ public class LihatCategoryView extends javax.swing.JFrame {
         }
 
         int konfirmasi = JOptionPane.showConfirmDialog(
-            this,
-            "Yakin ingin mengedit data ini?",
-            "Konfirmasi Edit",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE
+                this,
+                "Yakin ingin mengedit data ini?",
+                "Konfirmasi Edit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
         );
 
         if (konfirmasi != JOptionPane.YES_OPTION) {
@@ -68,12 +68,11 @@ public class LihatCategoryView extends javax.swing.JFrame {
                 }
             });
             editView.setVisible(true);
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -242,7 +241,7 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                try {
+        try {
             int baris = jTable1.getSelectedRow();
             if (baris == -1) {
                 JOptionPane.showMessageDialog(this, "Pilih data yang akan dihapus!");

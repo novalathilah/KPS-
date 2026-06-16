@@ -9,5 +9,5 @@ package model;
  * @author reysa eka
  */
 public class LaporanModel {
-    
+
 }

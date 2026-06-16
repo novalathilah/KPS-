@@ -13,8 +13,6 @@ import java.util.List;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-
 public class LihatTransaksiView extends javax.swing.JFrame {
 
     private int idUser;  // ← GANTI dari String ke int
@@ -64,8 +62,8 @@ public class LihatTransaksiView extends javax.swing.JFrame {
 
             if (list != null) {
                 for (TransaksiModel t : list) {
-                    if (t.getNamaCategory().toLowerCase().contains(keyword.toLowerCase()) ||
-                        t.getDeskripsi().toLowerCase().contains(keyword.toLowerCase())) {
+                    if (t.getNamaCategory().toLowerCase().contains(keyword.toLowerCase())
+                            || t.getDeskripsi().toLowerCase().contains(keyword.toLowerCase())) {
                         Object[] row = new Object[]{
                             t.getIdTransaksi(),
                             t.getTanggal(),
@@ -102,6 +100,7 @@ public class LihatTransaksiView extends javax.swing.JFrame {
             }
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -252,49 +251,49 @@ public class LihatTransaksiView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Pilih data yang ingin diedit!");
-        return;
-    }
-    
-    // ========== POPUP KONFIRMASI EDIT ==========
-    int konfirmasi = JOptionPane.showConfirmDialog(
-        this,
-        "Yakin ingin mengedit transaksi ini?",
-        "Konfirmasi Edit",
-        JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE
-    );
-    
-    if (konfirmasi != JOptionPane.YES_OPTION) {
-        return; // Batal edit
-    }
-    
-    try {
-        int idTransaksi = (int) jTable1.getValueAt(selectedRow, 0);
-        String tanggal = jTable1.getValueAt(selectedRow, 1).toString();
-        String namaCategory = jTable1.getValueAt(selectedRow, 2).toString();
-        String jumlahStr = jTable1.getValueAt(selectedRow, 3).toString().replace("Rp ", "").replace(",", "");
-        double jumlah = Double.parseDouble(jumlahStr);
-        String deskripsi = jTable1.getValueAt(selectedRow, 4).toString();
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date tanggalDate = sdf.parse(tanggal);
-        
-        EditTransaksiView editView = new EditTransaksiView();
-        editView.setData(idTransaksi, idUser, 0, jumlah, deskripsi, tanggalDate, namaCategory);
-        editView.setVisible(true);
-        
-        loadData();
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih data yang ingin diedit!");
+            return;
+        }
+
+        // ========== POPUP KONFIRMASI EDIT ==========
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin mengedit transaksi ini?",
+                "Konfirmasi Edit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (konfirmasi != JOptionPane.YES_OPTION) {
+            return; // Batal edit
+        }
+
+        try {
+            int idTransaksi = (int) jTable1.getValueAt(selectedRow, 0);
+            String tanggal = jTable1.getValueAt(selectedRow, 1).toString();
+            String namaCategory = jTable1.getValueAt(selectedRow, 2).toString();
+            String jumlahStr = jTable1.getValueAt(selectedRow, 3).toString().replace("Rp ", "").replace(",", "");
+            double jumlah = Double.parseDouble(jumlahStr);
+            String deskripsi = jTable1.getValueAt(selectedRow, 4).toString();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date tanggalDate = sdf.parse(tanggal);
+
+            EditTransaksiView editView = new EditTransaksiView();
+            editView.setData(idTransaksi, idUser, 0, jumlah, deskripsi, tanggalDate, namaCategory);
+            editView.setVisible(true);
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-           deleteData();
+        deleteData();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

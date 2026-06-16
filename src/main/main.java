@@ -4,29 +4,29 @@
  */
 package main;
 
-import controllers.UserController;
 import javax.swing.JOptionPane;
 import CategoryView.TambahCategoryView;
 import CategoryView.LihatCategoryView;
 import UsersView.LoginView;
 import TransaksiView.TambahTransaksiView;
 import TransaksiView.LihatTransaksiView;
+
 /**
  *
  * @author reysa eka
  */
 public class main extends javax.swing.JFrame {
-    
+
     // ========== VARIABLE SESSION ==========
     private String currentUser = "Guest";
     private boolean isLoggedIn = false;
     private int currentUserId = 0;
-    
+
     public main() {
         initComponents();
         loadDashboard();
     }
-    
+
     // ========== METHOD UNTUK MENGELOLA SESSION ==========
     private void loadDashboard() {
         if (isLoggedIn) {
@@ -35,31 +35,31 @@ public class main extends javax.swing.JFrame {
             jLabel3.setText("Users : Guest (Belum Login)");
         }
     }
-    
+
     public void setUser(String username) {
         this.currentUser = username;
         this.isLoggedIn = true;
         loadDashboard();
     }
-    
+
     public void setUserId(int idUser) {
         this.currentUserId = idUser;
     }
-    
+
     public int getCurrentUserId() {
         return currentUserId;
     }
-    
+
     private boolean checkLogin() {
         if (!isLoggedIn) {
             int pilihan = JOptionPane.showConfirmDialog(
-                this,
-                "Anda harus login terlebih dahulu!\nIngin login sekarang?",
-                "Login Diperlukan",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE
+                    this,
+                    "Anda harus login terlebih dahulu!\nIngin login sekarang?",
+                    "Login Diperlukan",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
             );
-            
+
             if (pilihan == JOptionPane.YES_OPTION) {
                 openLoginView();
             }
@@ -67,14 +67,14 @@ public class main extends javax.swing.JFrame {
         }
         return true;
     }
-    
+
     private void openLoginView() {
         LoginView loginView = new LoginView();
         loginView.setMain(this);
         loginView.setVisible(true);
         this.setVisible(false);
     }
-    
+
     private void logout() {
         currentUser = "Guest";
         isLoggedIn = false;
@@ -219,7 +219,9 @@ public class main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         LihatCategoryView lihatCategory = new LihatCategoryView();
         lihatCategory.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -229,30 +231,32 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         TambahCategoryView tambahCategory = new TambahCategoryView();
         tambahCategory.setCurrentUser(currentUser);
         tambahCategory.setVisible(true);
-     
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (isLoggedIn) {
             int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Yakin mau logout?",
-                "Konfirmasi Logout",
-                JOptionPane.YES_NO_OPTION
+                    this,
+                    "Yakin mau logout?",
+                    "Konfirmasi Logout",
+                    JOptionPane.YES_NO_OPTION
             );
             if (confirm == JOptionPane.YES_OPTION) {
                 logout();
             }
         } else {
             int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Yakin mau keluar aplikasi?",
-                "Konfirmasi Keluar",
-                JOptionPane.YES_NO_OPTION
+                    this,
+                    "Yakin mau keluar aplikasi?",
+                    "Konfirmasi Keluar",
+                    JOptionPane.YES_NO_OPTION
             );
             if (confirm == JOptionPane.YES_OPTION) {
                 this.dispose();
@@ -261,23 +265,27 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-    if (!checkLogin()) return;
-    LihatTransaksiView lihatTransaksi = new LihatTransaksiView();
-    lihatTransaksi.setUserId(currentUserId); 
-    lihatTransaksi.setVisible(true);
+        if (!checkLogin()) {
+            return;
+        }
+        LihatTransaksiView lihatTransaksi = new LihatTransaksiView();
+        lihatTransaksi.setUserId(currentUserId);
+        lihatTransaksi.setVisible(true);
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-       
+
     }//GEN-LAST:event_jMenu3ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         TambahTransaksiView tambahTransaksi = new TambahTransaksiView();
         tambahTransaksi.setCurrentUser(currentUser);
         tambahTransaksi.setIdUser(currentUserId);
-        tambahTransaksi.setVisible(true); 
+        tambahTransaksi.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**

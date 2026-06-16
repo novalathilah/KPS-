@@ -4,7 +4,6 @@ import controllers.UserController;
 import javax.swing.JOptionPane;
 import main.main;
 
-
 /**
  *
  * @author reysa eka
@@ -20,11 +19,10 @@ public class LoginView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
-    
+
     public void setMain(main mainFrame) {
         this.mainFrame = mainFrame;
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -154,32 +152,32 @@ public class LoginView extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-  String username = jTextField1.getText().trim();
-    String password = new String(jPasswordField1.getPassword());
-    
-    if (username.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Username dan Password tidak boleh kosong!");
-        return;
-    }
-    
-    UserController userController = new UserController();
-    model.UserModel user = userController.loginUser(username, password);
-    
-    if (user != null) {
-        JOptionPane.showMessageDialog(this, "Login Berhasil! Selamat datang " + username);
-        if (mainFrame != null) {
-            mainFrame.setUser(username);
-            mainFrame.setUserId(user.getIdUser());  // ← TAMBAHKAN INI!
-            mainFrame.setVisible(true);
+        String username = jTextField1.getText().trim();
+        String password = new String(jPasswordField1.getPassword());
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username dan Password tidak boleh kosong!");
+            return;
         }
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Username atau password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
-    }
+
+        UserController userController = new UserController();
+        model.UserModel user = userController.loginUser(username, password);
+
+        if (user != null) {
+            JOptionPane.showMessageDialog(this, "Login Berhasil! Selamat datang " + username);
+            if (mainFrame != null) {
+                mainFrame.setUser(username);
+                mainFrame.setUserId(user.getIdUser());  // ← TAMBAHKAN INI!
+                mainFrame.setVisible(true);
+            }
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Username atau password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

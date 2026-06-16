@@ -9,5 +9,5 @@ package controllers;
  * @author reysa eka
  */
 public class LaporanController {
-    
+
 }

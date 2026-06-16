@@ -24,7 +24,7 @@ public class TambahCategoryView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    
+
     public void setCurrentUser(String username) {
         this.currentUser = username;
     }
@@ -181,12 +181,13 @@ public class TambahCategoryView extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
-    
-        private void clearForm() {
+
+    private void clearForm() {
         jTextField1.setText("");
         jComboBox1.setSelectedIndex(0);
         jTextField1.requestFocus();
     }
+
     /**
      * @param args the command line arguments
      */

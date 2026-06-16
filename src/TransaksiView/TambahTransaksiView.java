@@ -18,7 +18,7 @@ import javax.swing.DefaultComboBoxModel;
  * @author reysa eka
  */
 public class TambahTransaksiView extends javax.swing.JFrame {
-    
+
     private String currentUser;
     private int idUser;
     private TransaksiController transaksiController;
@@ -33,31 +33,32 @@ public class TambahTransaksiView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    
+
     public void setCurrentUser(String username) {
         this.currentUser = username;
     }
-    
+
     public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
-    
+
     private void loadCategories() {
         try {
             List<Object[]> categories = categoryController.getAllCategories();
             DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
             model.addElement("-- Pilih Category --");
-            
+
             for (Object[] category : categories) {
                 String categoryName = (String) category[1];
                 model.addElement(categoryName);
             }
-            
+
             jComboBox2.setModel(model);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,46 +208,48 @@ public class TambahTransaksiView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    // Validasi Category
+        // Validasi Category
         if (selectedIdCategory == 0) {
             JOptionPane.showMessageDialog(this, "Pilih Category terlebih dahulu!");
             return;
         }
-        
+
         // Validasi Jumlah
         String jumlahStr = jTextField1.getText().trim();
         if (jumlahStr.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Masukkan jumlah transaksi!");
             return;
         }
-        
+
         double jumlah;
         try {
             jumlah = Double.parseDouble(jumlahStr);
-            if (jumlah <= 0) throw new NumberFormatException();
+            if (jumlah <= 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Jumlah harus berupa angka positif!");
             return;
         }
-        
+
         // Validasi Tanggal
         Date tanggal = jDateChooser1.getDate();
         if (tanggal == null) {
             JOptionPane.showMessageDialog(this, "Pilih tanggal transaksi!");
             return;
         }
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tanggalStr = sdf.format(tanggal);
-        
+
         // Ambil data dari form
         String deskripsi = jTextArea1.getText().trim();
-        
+
         // Panggil Controller (TANPA jenisTransaksi)
         boolean sukses = transaksiController.tambahTransaksi(
-            idUser, selectedIdCategory, jumlah, deskripsi, tanggalStr
+                idUser, selectedIdCategory, jumlah, deskripsi, tanggalStr
         );
-        
+
         if (sukses) {
             JOptionPane.showMessageDialog(this, "Transaksi berhasil ditambahkan!");
             clearForm();
@@ -254,7 +257,7 @@ public class TambahTransaksiView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Gagal menambahkan transaksi!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
     private void clearForm() {
         jComboBox2.setSelectedIndex(0);
         jTextField1.setText("");
@@ -262,6 +265,7 @@ public class TambahTransaksiView extends javax.swing.JFrame {
         jTextArea1.setText("");
         selectedIdCategory = 0;
     }
+
     /**
      * @param args the command line arguments
      */

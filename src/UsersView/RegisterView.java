@@ -4,8 +4,6 @@ import controllers.UserController;
 import javax.swing.JOptionPane;
 import main.main;
 
-
-
 public class RegisterView extends javax.swing.JFrame {
 
     private main mainFrame;
@@ -17,11 +15,10 @@ public class RegisterView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
-    
+
     public void setMain(main mainFrame) {
         this.mainFrame = mainFrame;
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -168,27 +165,27 @@ public class RegisterView extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String username =  jTextField1.getText().trim();
-        String email =  jTextField2.getText().trim();
+        String username = jTextField1.getText().trim();
+        String email = jTextField2.getText().trim();
         String password = new String(jPasswordField1.getPassword());
-        
+
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Semua field harus diisi!");
             return;
         }
-        
+
         if (!email.contains("@") || !email.contains(".")) {
             JOptionPane.showMessageDialog(this, "Format email tidak valid!");
             return;
         }
-        
+
         if (password.length() < 6) {
             JOptionPane.showMessageDialog(this, "Password minimal 6 karakter!");
             return;
         }
-        
+
         String result = userController.registerUser(username, email, password);
-        
+
         if (result.equals("SUCCESS")) {
             JOptionPane.showMessageDialog(this, "Registrasi Berhasil! Silakan login.");
             LoginView loginView = new LoginView();

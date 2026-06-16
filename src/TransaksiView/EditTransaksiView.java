@@ -34,16 +34,16 @@ public class EditTransaksiView extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public void setData(int idTransaksi, int idUser, int idCategory, double jumlah, 
-                        String deskripsi, Date tanggal, String namaCategory) {
+    public void setData(int idTransaksi, int idUser, int idCategory, double jumlah,
+            String deskripsi, Date tanggal, String namaCategory) {
         this.idTransaksi = idTransaksi;
         this.idUser = idUser;
         this.selectedIdCategory = idCategory;
-        
+
         jTextField1.setText(String.valueOf(jumlah));
         jTextArea1.setText(deskripsi);
         jDateChooser1.setDate(tanggal);
-        
+
         // Set selected category di combobox
         for (int i = 0; i < jComboBox2.getItemCount(); i++) {
             if (jComboBox2.getItemAt(i).equals(namaCategory)) {
@@ -69,7 +69,7 @@ public class EditTransaksiView extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -202,7 +202,7 @@ public class EditTransaksiView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-  // Validasi Category
+        // Validasi Category
         if (selectedIdCategory == 0) {
             JOptionPane.showMessageDialog(this, "Pilih Category terlebih dahulu!");
             return;
@@ -218,7 +218,9 @@ public class EditTransaksiView extends javax.swing.JFrame {
         double jumlah;
         try {
             jumlah = Double.parseDouble(jumlahStr);
-            if (jumlah <= 0) throw new NumberFormatException();
+            if (jumlah <= 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Jumlah harus berupa angka positif!");
             return;
@@ -239,7 +241,7 @@ public class EditTransaksiView extends javax.swing.JFrame {
 
         // Panggil Controller untuk update
         boolean sukses = transaksiController.updateTransaksi(
-            idTransaksi, idUser, selectedIdCategory, jumlah, deskripsi, tanggalStr
+                idTransaksi, idUser, selectedIdCategory, jumlah, deskripsi, tanggalStr
         );
 
         if (sukses) {
@@ -264,7 +266,7 @@ public class EditTransaksiView extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-            this.dispose();
+        this.dispose();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 

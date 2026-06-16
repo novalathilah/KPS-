@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 public class CategoryService {
 
     private Connection connection;
-    
+
     public CategoryService() {
         try {
             this.connection = Database.getConnection();
@@ -56,12 +56,11 @@ public class CategoryService {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public List<Object[]> getAllCategories() {
         List<Object[]> list = new ArrayList<>();
         String sql = "SELECT * FROM category ORDER BY id_category DESC";
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 Object[] row = new Object[]{
                     rs.getInt("id_category"),
@@ -75,7 +74,7 @@ public class CategoryService {
         }
         return list;
     }
-    
+
     public CategoryModel getCategoryById(int idCategory) {
         String sql = "SELECT * FROM category WHERE id_category = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
