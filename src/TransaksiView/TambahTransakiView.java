@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package view.transaksi;
+package TransaksiView;
 import controllers.TransaksiController;
 import model.TransaksiModel;
 import javax.swing.JOptionPane;
