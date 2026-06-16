@@ -3,35 +3,80 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main;
+
+
 import controllers.UserController;
-import controllers.TransaksiController;
-import controllers.LaporanController;
 import javax.swing.JOptionPane;
 
-
-
+import CategoryView.TambahCategoryView;
+import CategoryView.LihatCategoryView;
+import view.LoginView;
 
 /**
  *
- * @author HP
+ * @author reysa eka
  */
+    
+    // ========== VARIABLE SESSION ==========
 public class main extends javax.swing.JFrame {
     
-
-    /**
-     * Creates new form main
-     */
+    // ========== VARIABLE SESSION ==========
+    private String currentUser = "Guest";
+    private boolean isLoggedIn = false;
+    
     public main() {
         initComponents();
+        loadDashboard();
     }
     
-    public tampilDataUser() {
-    
-
+    // ========== METHOD UNTUK MENGELOLA SESSION ==========
+    private void loadDashboard() {
+        if (isLoggedIn) {
+            jLabel3.setText("Users : " + currentUser);
+        } else {
+            jLabel3.setText("Users : Guest (Belum Login)");
+        }
     }
-
-}
-
+    
+    public void setUser(String username) {
+        this.currentUser = username;
+        this.isLoggedIn = true;
+        loadDashboard();
+        // Hanya tampilkan 1 kali popup login berhasil
+        JOptionPane.showMessageDialog(this, "Login Berhasil! Selamat datang " + currentUser);
+    }
+    
+    private boolean checkLogin() {
+        if (!isLoggedIn) {
+            int pilihan = JOptionPane.showConfirmDialog(
+                this,
+                "Anda harus login terlebih dahulu!\nIngin login sekarang?",
+                "Login Diperlukan",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+            );
+            
+            if (pilihan == JOptionPane.YES_OPTION) {
+                openLoginView();
+            }
+            return false;
+        }
+        return true;
+    }
+    
+    private void openLoginView() {
+        LoginView loginView = new LoginView();
+        loginView.setMain(this);
+        loginView.setVisible(true);
+        this.setVisible(false);
+    }
+    
+    private void logout() {
+        currentUser = "Guest";
+        isLoggedIn = false;
+        loadDashboard();
+        JOptionPane.showMessageDialog(this, "Anda telah logout!");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,46 +86,35 @@ public class main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
-        jMenu11 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
-        jMenu12 = new javax.swing.JMenu();
-
-        jMenuItem1.setText("jMenuItem1");
-
-        jMenuItem2.setText("jMenuItem2");
-
-        jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nama : ");
+        jLabel1.setText("Selamat Datang di KPS Tracking Aplikasi Manage Keuangan");
 
-        jLabel2.setText("Selamat Datang di KPS Tracking Personal Finance Management System");
+        jLabel2.setText("Manage Keuangan anda secara efisien");
 
-        jLabel3.setText("Silakan Manage Keuangan Anda");
+        jLabel3.setText("Users :");
 
-        jButton1.setText("jButton1");
-
-        jButton2.setText("Logout");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setText("Logout");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
+
+        jMenu1.setText("Menu");
+        jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Category");
         jMenu2.addActionListener(new java.awt.event.ActionListener() {
@@ -89,39 +123,28 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jMenu5.setText("Tambah Category");
-        jMenu2.add(jMenu5);
+        jMenuItem1.setText("Tambah Category");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
 
-        jMenu8.setText("Lihat Category");
-        jMenu2.add(jMenu8);
+        jMenuItem2.setText("Lihat Category");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
 
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Transaksi");
-        jMenu3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu3ActionPerformed(evt);
-            }
-        });
-
-        jMenu1.setText("Tambah Transaksi");
-        jMenu3.add(jMenu1);
-
-        jMenu11.setText("Lihat Transaksi");
-        jMenu3.add(jMenu11);
-
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Laporan");
-        jMenu4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu4ActionPerformed(evt);
-            }
-        });
-
-        jMenu12.setText("Lihat Laporan");
-        jMenu4.add(jMenu12);
-
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -130,50 +153,81 @@ public class main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(111, 111, 111))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel1)
+                        .addGap(0, 54, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
-                .addComponent(jLabel2)
+                .addGap(21, 21, 21)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
-                .addComponent(jButton2))
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jButton1))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if (!checkLogin()) return;
+        LihatCategoryView lihatCategory = new LihatCategoryView();
+        lihatCategory.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jMenu2ActionPerformed
 
-    private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu4ActionPerformed
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if (!checkLogin()) return;
+        TambahCategoryView tambahCategory = new TambahCategoryView();
+        tambahCategory.setCurrentUser(currentUser);
+        tambahCategory.setVisible(true);
+     
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu3ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        if (isLoggedIn) {
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin mau logout?",
+                "Konfirmasi Logout",
+                JOptionPane.YES_NO_OPTION
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+                logout();
+            }
+        } else {
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin mau keluar aplikasi?",
+                "Konfirmasi Keluar",
+                JOptionPane.YES_NO_OPTION
+            );
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,21 +266,15 @@ public class main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu11;
-    private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     // End of variables declaration//GEN-END:variables
 }

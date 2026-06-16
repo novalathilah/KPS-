@@ -1,9 +1,8 @@
 package view;
 
-
 import controllers.UserController;
-import model.UserModel;
 import javax.swing.JOptionPane;
+import main.main;
 
 
 /**
@@ -12,12 +11,20 @@ import javax.swing.JOptionPane;
  */
 public class LoginView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form UserView
-     */
+    private main mainFrame;
+    private UserController userController;
+
     public LoginView() {
         initComponents();
+        userController = new UserController();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
+    
+    public void setMain(main mainFrame) {
+        this.mainFrame = mainFrame;
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -130,36 +137,34 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:                                         
-
-    String username = jTextField1.getText();
-    String password = new String(jPasswordField1.getPassword());
-
-    UserController controller = new UserController();
-
-    UserModel user = controller.loginUser(username, password);
-
-    if (user != null) {
-
-        JOptionPane.showMessageDialog(this,
-                "Login Berhasil, Selamat Datang "
-                + user.getUsername());
-
-    } else {
-
-        JOptionPane.showMessageDialog(this,
-                "Username atau Password Salah");
-
-    }
-
-
+        String username = jTextField1.getText().trim();
+        String password = new String(jPasswordField1.getPassword());
+        
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username dan Password tidak boleh kosong!");
+            return;
+        }
+        
+        model.UserModel user = userController.loginUser(username, password);
+        
+        if (user != null) {
+            // Hanya 1 popup dari main (setUser), tidak usah double
+            if (mainFrame != null) {
+                mainFrame.setUser(username);
+                mainFrame.setVisible(true);
+            }
+            this.dispose(); // Tutup LoginView
+        } else {
+            JOptionPane.showMessageDialog(this, "Username atau password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        RegisterView register = new RegisterView();
-        register.setVisible(true);
+        RegisterView registerView = new RegisterView();
+        registerView.setMain(mainFrame);
+        registerView.setVisible(true);
         this.dispose();
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed

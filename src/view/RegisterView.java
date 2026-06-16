@@ -1,31 +1,27 @@
 package view;
 
-import controllers.UserController; 
+import controllers.UserController;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import java.util.List;
-import java.sql.SQLException;
+import main.main;
 
 
 
 public class RegisterView extends javax.swing.JFrame {
 
+    private main mainFrame;
+    private UserController userController;
+
     public RegisterView() {
         initComponents();
-        refreshTable();
+        userController = new UserController();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
     
-    private void refreshTable() {
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Membersihkan isi tabel 
-        
-        UserController controller = new UserController();
-        List<Object[]> users = controller.getAllUsers(); 
-        
-        for (Object[] row : users) {
-            model.addRow(row);
-        }
+    public void setMain(main mainFrame) {
+        this.mainFrame = mainFrame;
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -172,43 +168,43 @@ public class RegisterView extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String username = jTextField1.getText();
-        String email = jTextField2.getText();
+        String username =  jTextField1.getText().trim();
+        String email =  jTextField2.getText().trim();
         String password = new String(jPasswordField1.getPassword());
         
-        controllers.UserController controller = new controllers.UserController();
-        String hasil = controller.registerUser(username, email, password);        
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Semua field harus diisi!");
+            return;
+        }
         
-        if (hasil.equals("SUCCESS")) {
-
-    JOptionPane.showMessageDialog(this,
-            "Registrasi Berhasil!");
-
-    refreshTable();
-
-    jTextField1.setText("");
-    jTextField2.setText("");
-    jPasswordField1.setText("");
-
-    LoginView login = new LoginView();
-    login.setVisible(true);
-    this.dispose();
-
-} else {
-
-    JOptionPane.showMessageDialog(this,
-            hasil,
-            "Validasi",
-            JOptionPane.WARNING_MESSAGE);
-}
+        if (!email.contains("@") || !email.contains(".")) {
+            JOptionPane.showMessageDialog(this, "Format email tidak valid!");
+            return;
+        }
+        
+        if (password.length() < 6) {
+            JOptionPane.showMessageDialog(this, "Password minimal 6 karakter!");
+            return;
+        }
+        
+        String result = userController.registerUser(username, email, password);
+        
+        if (result.equals("SUCCESS")) {
+            JOptionPane.showMessageDialog(this, "Registrasi Berhasil! Silakan login.");
+            LoginView loginView = new LoginView();
+            loginView.setMain(mainFrame);
+            loginView.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, result, "Registrasi Gagal", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        LoginView login = new LoginView();
-    login.setVisible(true);
-
-    this.dispose(); // menutup RegisterView
+        LoginView loginView = new LoginView();
+        loginView.setMain(mainFrame);
+        loginView.setVisible(true);
+        this.dispose();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
