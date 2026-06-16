@@ -26,6 +26,14 @@ public class LihatTransaksiView extends javax.swing.JFrame {
         service.tampilData(jTable1);
 
     }
+    // Tambahkan ini di dalam file LihatTransaksiView.java
+public void setCurrentUser(String namaUser) {
+    // Contoh penggunaan: menampilkan nama user ke sebuah JLabel di halaman transaksi
+    // jLabelUser.setText(namaUser); 
+    
+    // Atau jika kamu punya variabel penampung global di kelas ini:
+    // this.currentUser = namaUser;
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

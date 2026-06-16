@@ -254,11 +254,10 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
         if (!checkLogin()) return;
-        new TambahTransakiView().
-        setVisible(true);
-        dispose();
+        TambahTransakiView tambahTransaki = new TambahTransakiView();
+        tambahTransaki.setCurrentUser(currentUser);
+        tambahTransaki.setVisible(true);
         
         
         
@@ -270,9 +269,10 @@ public class main extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         if (!checkLogin()) return;
-        new LihatTransaksiView().
-        setVisible(true);
-        dispose();
+        LihatTransaksiView lihatTransaksi = new LihatTransaksiView();
+        lihatTransaksi.setCurrentUser(currentUser);
+        lihatTransaksi.setVisible(true);
+     
         
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

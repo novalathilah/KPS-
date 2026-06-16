@@ -21,6 +21,10 @@ public class TambahTransakiView extends javax.swing.JFrame {
     public TambahTransakiView() {
         initComponents();
     }
+    // Tambahkan ini di dalam file LihatTransaksiView.java
+public void setCurrentUser(String namaUser) {
+    
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
