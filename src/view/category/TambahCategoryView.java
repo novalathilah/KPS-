@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view.category;
+import controllers.CategoryController;
+import model.CategoryModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -105,6 +108,54 @@ public class TambahCategoryView extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try {
+
+    CategoryModel category =
+            new CategoryModel();
+
+    category.setNamaCategory(
+            jTextField1.getText()
+    );
+
+    category.setTipe(
+            jComboBox1.getSelectedItem()
+                    .toString()
+    );
+
+    CategoryController controller =
+            new CategoryController();
+
+    if (controller.simpan(category)) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Data berhasil disimpan"
+        );
+
+        jTextField1.setText("");
+
+    } else {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Data gagal disimpan"
+        );
+
+    }
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(
+            this,
+            e.getMessage()
+    );
+
+}
+        
+       
+ 
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

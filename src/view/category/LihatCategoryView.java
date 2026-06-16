@@ -3,18 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view.category;
-
+import service.CategoryService;
+import controllers.CategoryController;
+import javax.swing.JOptionPane;
 /**
  *
  * @author HP
  */
 public class LihatCategoryView extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form LihatCategoryView
      */
     public LihatCategoryView() {
         initComponents();
+        CategoryService service =
+            new CategoryService();
+
+    service.tampilData(jTable1);
+
+
     }
 
     /**
@@ -137,10 +146,98 @@ public class LihatCategoryView extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+
+    CategoryService service =
+            new CategoryService();
+
+    String keyword =
+            jTextField1.getText().trim();
+
+    if (keyword.isEmpty()) {
+
+        service.tampilData(jTable1);
+
+    } else {
+
+        service.cariCategory(
+                jTable1,
+                keyword
+        );
+
+    }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+
+    try {
+
+        // Cek apakah ada baris yang dipilih
+        int baris = jTable1.getSelectedRow();
+
+        if (baris == -1) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Pilih data yang akan dihapus!"
+            );
+
+            return;
+        }
+
+        // Ambil ID Category dari kolom pertama
+        int idCategory = Integer.parseInt(
+                jTable1.getValueAt(baris, 0).toString()
+        );
+
+        // Konfirmasi hapus
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menghapus data ini?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+
+            CategoryController controller =
+                    new CategoryController();
+
+            if (controller.hapus(idCategory)) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Data berhasil dihapus"
+                );
+
+                // Refresh JTable
+                CategoryService service =
+                        new CategoryService();
+
+                service.tampilData(jTable1);
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Data gagal dihapus"
+                );
+
+            }
+
+        }
+
+    } catch (Exception e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                e.getMessage()
+        );
+
+    }
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

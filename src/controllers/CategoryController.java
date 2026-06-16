@@ -1,13 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controllers;
 
-/**
- *
- * @author reysa eka
- */
+import model.CategoryModel;
+import service.CategoryService;
+
 public class CategoryController {
-    
+
+    private final CategoryService service =
+            new CategoryService();
+
+    public boolean simpan(CategoryModel category) {
+
+        return service.tambahCategory(category);
+
+    }
+
+    public boolean hapus(int idCategory) {
+
+        return service.hapusCategory(idCategory);
+
+    }
+
 }
