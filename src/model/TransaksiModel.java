@@ -2,11 +2,6 @@ package model;
 
 import java.sql.Date;
 
-/*
- * Class TransaksiModel digunakan sebagai wadah data transaksi.
- * Data yang diinput user akan disimpan sementara di objek ini
- * sebelum dikirim ke database.
- */
 public class TransaksiModel {
 
     private int idTransaksi;
@@ -15,8 +10,8 @@ public class TransaksiModel {
     private double jumlah;
     private String deskripsi;
     private Date tanggal;
+    private String namaCategory;    // Untuk tampilan (join dari tabel category)
 
-    // Getter dan Setter ID Transaksi
     public int getIdTransaksi() {
         return idTransaksi;
     }
@@ -25,7 +20,6 @@ public class TransaksiModel {
         this.idTransaksi = idTransaksi;
     }
 
-    // Getter dan Setter ID User
     public int getIdUser() {
         return idUser;
     }
@@ -34,7 +28,6 @@ public class TransaksiModel {
         this.idUser = idUser;
     }
 
-    // Getter dan Setter ID Category
     public int getIdCategory() {
         return idCategory;
     }
@@ -43,7 +36,6 @@ public class TransaksiModel {
         this.idCategory = idCategory;
     }
 
-    // Getter dan Setter Jumlah Transaksi
     public double getJumlah() {
         return jumlah;
     }
@@ -52,7 +44,6 @@ public class TransaksiModel {
         this.jumlah = jumlah;
     }
 
-    // Getter dan Setter Deskripsi
     public String getDeskripsi() {
         return deskripsi;
     }
@@ -61,12 +52,19 @@ public class TransaksiModel {
         this.deskripsi = deskripsi;
     }
 
-    // Getter dan Setter Tanggal
     public Date getTanggal() {
         return tanggal;
     }
 
     public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
+    }
+
+    public String getNamaCategory() {
+        return namaCategory;
+    }
+
+    public void setNamaCategory(String namaCategory) {
+        this.namaCategory = namaCategory;
     }
 }

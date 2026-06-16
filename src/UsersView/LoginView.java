@@ -1,4 +1,4 @@
-package view;
+package UsersView;
 
 import controllers.UserController;
 import javax.swing.JOptionPane;
@@ -158,26 +158,28 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String username = jTextField1.getText().trim();
-        String password = new String(jPasswordField1.getPassword());
-        
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username dan Password tidak boleh kosong!");
-            return;
+  String username = jTextField1.getText().trim();
+    String password = new String(jPasswordField1.getPassword());
+    
+    if (username.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Username dan Password tidak boleh kosong!");
+        return;
+    }
+    
+    UserController userController = new UserController();
+    model.UserModel user = userController.loginUser(username, password);
+    
+    if (user != null) {
+        JOptionPane.showMessageDialog(this, "Login Berhasil! Selamat datang " + username);
+        if (mainFrame != null) {
+            mainFrame.setUser(username);
+            mainFrame.setUserId(user.getIdUser());  // ← TAMBAHKAN INI!
+            mainFrame.setVisible(true);
         }
-        
-        model.UserModel user = userController.loginUser(username, password);
-        
-        if (user != null) {
-            // Hanya 1 popup dari main (setUser), tidak usah double
-            if (mainFrame != null) {
-                mainFrame.setUser(username);
-                mainFrame.setVisible(true);
-            }
-            this.dispose(); // Tutup LoginView
-        } else {
-            JOptionPane.showMessageDialog(this, "Username atau password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
-        }
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Username atau password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -1,4 +1,4 @@
-package view;
+package UsersView;
 
 import controllers.UserController;
 import javax.swing.JOptionPane;

@@ -4,25 +4,23 @@
  */
 package main;
 
-
 import controllers.UserController;
 import javax.swing.JOptionPane;
 import CategoryView.TambahCategoryView;
 import CategoryView.LihatCategoryView;
-import view.LoginView;
-import TransaksiView.*;
-
+import UsersView.LoginView;
+import TransaksiView.TambahTransaksiView;
+import TransaksiView.LihatTransaksiView;
 /**
  *
  * @author reysa eka
  */
-    
-    // ========== VARIABLE SESSION ==========
 public class main extends javax.swing.JFrame {
     
     // ========== VARIABLE SESSION ==========
     private String currentUser = "Guest";
     private boolean isLoggedIn = false;
+    private int currentUserId = 0;
     
     public main() {
         initComponents();
@@ -42,8 +40,14 @@ public class main extends javax.swing.JFrame {
         this.currentUser = username;
         this.isLoggedIn = true;
         loadDashboard();
-        // Hanya tampilkan 1 kali popup login berhasil
-        JOptionPane.showMessageDialog(this, "Login Berhasil! Selamat datang " + currentUser);
+    }
+    
+    public void setUserId(int idUser) {
+        this.currentUserId = idUser;
+    }
+    
+    public int getCurrentUserId() {
+        return currentUserId;
     }
     
     private boolean checkLogin() {
@@ -74,9 +78,12 @@ public class main extends javax.swing.JFrame {
     private void logout() {
         currentUser = "Guest";
         isLoggedIn = false;
+        currentUserId = 0;
         loadDashboard();
         JOptionPane.showMessageDialog(this, "Anda telah logout!");
+        openLoginView();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -150,7 +157,7 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem3.setText("Lihat Transaksi");
+        jMenuItem3.setText("Tambah Transaksi");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -158,7 +165,7 @@ public class main extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem3);
 
-        jMenuItem4.setText("Tambah Transaksi");
+        jMenuItem4.setText("Lihat Transaksi");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -254,13 +261,11 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        if (!checkLogin()) return;
-        TambahTransakiView tambahTransaki = new TambahTransakiView();
-        tambahTransaki.setCurrentUser(currentUser);
-        tambahTransaki.setVisible(true);
-        
-        
-        
+    if (!checkLogin()) return;
+    LihatTransaksiView lihatTransaksi = new LihatTransaksiView();
+    lihatTransaksi.setUserId(currentUserId); 
+    lihatTransaksi.setVisible(true);
+
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
@@ -269,11 +274,10 @@ public class main extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         if (!checkLogin()) return;
-        LihatTransaksiView lihatTransaksi = new LihatTransaksiView();
-        lihatTransaksi.setCurrentUser(currentUser);
-        lihatTransaksi.setVisible(true);
-     
-        
+        TambahTransaksiView tambahTransaksi = new TambahTransaksiView();
+        tambahTransaksi.setCurrentUser(currentUser);
+        tambahTransaksi.setIdUser(currentUserId);
+        tambahTransaksi.setVisible(true); 
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
