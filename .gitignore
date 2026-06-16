@@ -1,4 +1,19 @@
+# NetBeans
 /build/
 /dist/
 /nbproject/private/
-/db_manage_keuangan.sql/
+
+# Database
+/db_manage_keuangan.sql
+
+# Java compiled files
+*.class
+
+# IDE files
+*.swp
+*.lock
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
