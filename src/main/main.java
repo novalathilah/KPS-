@@ -81,7 +81,6 @@ public class main extends javax.swing.JFrame {
         currentUserId = 0;
         loadDashboard();
         JOptionPane.showMessageDialog(this, "Anda telah logout!");
-        openLoginView();
     }
 
     /**
