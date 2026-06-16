@@ -212,7 +212,13 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {
-        try {
+    }
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+                try {
             int baris = jTable1.getSelectedRow();
             if (baris == -1) {
                 JOptionPane.showMessageDialog(this, "Pilih data yang akan dihapus!");
@@ -233,13 +239,6 @@ public class LihatCategoryView extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
-    }
-
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
