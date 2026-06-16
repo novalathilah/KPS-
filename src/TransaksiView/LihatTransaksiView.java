@@ -5,6 +5,7 @@
 package TransaksiView;
 
 import service.TransaksiService;
+import main.main;
 
 public class LihatTransaksiView extends javax.swing.JFrame {
 

@@ -8,6 +8,7 @@ import model.TransaksiModel;
 import javax.swing.JOptionPane;
 
 
+
 /**
  *
  * @author HP
@@ -212,6 +213,7 @@ public class TambahTransakiView extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
+        
         
     
         
