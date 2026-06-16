@@ -4,7 +4,11 @@
  */
 package CategoryView;
 
+
+
+
 import controllers.CategoryController;
+import model.CategoryModel;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 /**
@@ -21,6 +25,10 @@ public class EditCategoryView extends javax.swing.JFrame {
         categoryController = new CategoryController();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        jComboBox1.removeAllItems();
+        jComboBox1.addItem("Pemasukan");
+        jComboBox1.addItem("Pengeluaran");
     }
 
     public void setData(int idCategory, String namaCategory, String tipe) {
@@ -28,6 +36,7 @@ public class EditCategoryView extends javax.swing.JFrame {
         jTextField1.setText(namaCategory);
         jComboBox1.setSelectedItem(tipe);
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,6 +80,7 @@ public class EditCategoryView extends javax.swing.JFrame {
             }
         });
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pemasukan", "Pengeluaran" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -138,7 +148,6 @@ public class EditCategoryView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // VALIDASI 1: Cek nama category kosong
         String namaCategory = jTextField1.getText().trim();
         if (namaCategory.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Nama Category tidak boleh kosong!", "Validasi", JOptionPane.WARNING_MESSAGE);
@@ -146,14 +155,12 @@ public class EditCategoryView extends javax.swing.JFrame {
             return;
         }
 
-        // VALIDASI 2: Cek nama category minimal 3 karakter
         if (namaCategory.length() < 3) {
             JOptionPane.showMessageDialog(this, "Nama Category minimal 3 karakter!", "Validasi", JOptionPane.WARNING_MESSAGE);
             jTextField1.requestFocus();
             return;
         }
 
-        // VALIDASI 3: Cek tipe sudah dipilih
         String tipe = (String) jComboBox1.getSelectedItem();
         if (tipe == null || tipe.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Pilih Tipe Category!", "Validasi", JOptionPane.WARNING_MESSAGE);

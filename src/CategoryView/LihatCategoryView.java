@@ -6,9 +6,9 @@ package CategoryView;
 
 import service.CategoryService;
 import controllers.CategoryController;
-import model.CategoryModel;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
+
 /**
  *
  * @author HP
@@ -49,9 +49,14 @@ public class LihatCategoryView extends javax.swing.JFrame {
 
             EditCategoryView editView = new EditCategoryView();
             editView.setData(idCategory, namaCategory, tipe);
+            editView.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosed(java.awt.event.WindowEvent e) {
+                    refreshTable();
+                }
+            });
             editView.setVisible(true);
             
-            refreshTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
@@ -231,77 +236,9 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {
-         openEditForm();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-    try {
-
-        // Cek apakah ada baris yang dipilih
-        int baris = jTable1.getSelectedRow();
-
-        if (baris == -1) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Pilih data yang akan dihapus!"
-            );
-
-            return;
-        }
-
-        // Ambil ID Category dari kolom pertama
-        int idCategory = Integer.parseInt(
-                jTable1.getValueAt(baris, 0).toString()
-        );
-
-        // Konfirmasi hapus
-        int konfirmasi = JOptionPane.showConfirmDialog(
-                this,
-                "Yakin ingin menghapus data ini?",
-                "Konfirmasi",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (konfirmasi == JOptionPane.YES_OPTION) {
-
-            CategoryController controller =
-                    new CategoryController();
-
-            if (controller.hapus(idCategory)) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Data berhasil dihapus"
-                );
-
-                // Refresh JTable
-                CategoryService service =
-                        new CategoryService();
-
-                service.tampilData(jTable1);
-
-            } else {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Data gagal dihapus"
-                );
-
-            }
-
-        }
-
-    } catch (Exception e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                e.getMessage()
-        );
-
-    }
-
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -312,8 +249,6 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {
-        refreshTable();
-        jTextField1.setText("");
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -323,7 +258,7 @@ public class LihatCategoryView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+        openEditForm();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
