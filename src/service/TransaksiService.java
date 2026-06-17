@@ -1,6 +1,6 @@
 package service;
 
-import config.Database;
+import koneksi.Database;
 import model.TransaksiModel;
 import java.sql.*;
 import java.util.ArrayList;
