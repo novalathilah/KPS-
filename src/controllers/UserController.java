@@ -8,48 +8,43 @@ import java.util.List;
 public class UserController {
 
     // memanggil Service
-    private UserService UserService = new UserService();
+    private UserService userService = new UserService(); // FIX: huruf kecil biar sesuai Java convention
 
     // Controller untuk Login
     public UserModel loginUser(String username, String password) {
-        if (username.isEmpty() || password.isEmpty()) {
+        if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
             return null;
         }
-        return UserService.login(username, password);
+        return userService.login(username, password);
     }
 
     // Controller untuk Register
     public String registerUser(String username, String email, String password) {
 
-        if (username.trim().isEmpty()) {
+        if (username == null || username.trim().isEmpty()) {
             return "Username tidak boleh kosong";
         }
 
-        if (email.trim().isEmpty()) {
+        if (email == null || email.trim().isEmpty()) {
             return "Email tidak boleh kosong";
         }
 
-        if (password.trim().isEmpty()) {
+        if (password == null || password.trim().isEmpty()) {
             return "Password tidak boleh kosong";
         }
 
         try {
-            String emailRegex
-                    = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-
+            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
             boolean emailValid = email.matches(emailRegex);
             boolean passwordValid = password.length() >= 8;
 
-            if (!emailValid && !passwordValid) {
-                throw new Exception("Input tidak valid");
-            }
-
+            // FIX: Validasi terpisah biar jelas
             if (!emailValid) {
-                throw new Exception("Format email tidak valid");
+                return "Format email tidak valid";
             }
 
             if (!passwordValid) {
-                throw new Exception("Password tidak sesuai kriteria");
+                return "Password minimal 8 karakter";
             }
 
         } catch (Exception e) {
@@ -57,11 +52,11 @@ public class UserController {
         }
 
         UserModel newUser = new UserModel();
-        newUser.setUsername(username);
-        newUser.setEmail(email);
-        newUser.setPassword(password);
+        newUser.setUsername(username.trim());
+        newUser.setEmail(email.trim());
+        newUser.setPassword(password); // FIX: Sebaiknya hash password di service
 
-        boolean sukses = UserService.register(newUser);
+        boolean sukses = userService.register(newUser);
 
         if (sukses) {
             return "SUCCESS";
@@ -73,11 +68,9 @@ public class UserController {
     public List<Object[]> getAllUsers() {
         List<Object[]> dataTabel = new ArrayList<>();
 
-        // Mengambil data user 
-        List<UserModel> userList = UserService.getAllUsers();
+        List<UserModel> userList = userService.getAllUsers();
 
-        // Mengubah List<UserModel> menjadi List<Object[]> 
-        if (userList != null) {
+        if (userList != null && !userList.isEmpty()) { // FIX: Cek juga apakah kosong
             for (UserModel user : userList) {
                 Object[] row = new Object[]{
                     user.getIdUser(),

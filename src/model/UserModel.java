@@ -9,6 +9,7 @@ public class UserModel {
 
     // Constructor Kosong
     public UserModel() {
+
     }
 
     // Constructor Berisi

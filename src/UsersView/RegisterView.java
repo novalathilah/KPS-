@@ -179,8 +179,8 @@ public class RegisterView extends javax.swing.JFrame {
             return;
         }
 
-        if (password.length() < 6) {
-            JOptionPane.showMessageDialog(this, "Password minimal 6 karakter!");
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password minimal 8 karakter!");
             return;
         }
 
