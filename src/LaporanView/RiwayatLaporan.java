@@ -26,11 +26,11 @@ public class RiwayatLaporan extends javax.swing.JFrame {
         laporanController = new LaporanController();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        loadData();
     }
 
     public void setUserId(int idUser) {
         this.idUser = idUser;
+        loadData();
     }
 
     private void loadData() {
@@ -87,26 +87,49 @@ public class RiwayatLaporan extends javax.swing.JFrame {
         }
     }
 
-    private void deleteData() {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Pilih data yang ingin dihapus!");
-            return;
-        }
+   private void deleteData() {
+    int selectedRow = jTable1.getSelectedRow();
 
-        int idLaporan = (int) jTable1.getValueAt(selectedRow, 0);
-        int confirm = JOptionPane.showConfirmDialog(
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(
                 this,
-                "Yakin ingin menghapus laporan ini?",
-                "Konfirmasi",
-                JOptionPane.YES_NO_OPTION
+                "Pilih data laporan yang ingin dihapus terlebih dahulu!",
+                "Peringatan",
+                JOptionPane.WARNING_MESSAGE
         );
+        return;
+    }
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            // TODO: Implementasi hapus laporan
-            JOptionPane.showMessageDialog(this, "Fitur hapus belum tersedia!");
+    int idLaporan = Integer.parseInt(
+            jTable1.getValueAt(selectedRow, 0).toString()
+    );
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Yakin ingin menghapus laporan dengan ID " + idLaporan + "?",
+            "Konfirmasi Hapus",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        boolean berhasil = laporanController.hapusLaporan(idLaporan, idUser);
+
+        if (berhasil) {
+            JOptionPane.showMessageDialog(this, "Data laporan berhasil dihapus!");
+
+            jTextField1.setText("");
+            loadData();
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Data laporan gagal dihapus!",
+                    "Gagal",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -132,6 +155,12 @@ public class RiwayatLaporan extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Cari");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Search");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -256,6 +285,10 @@ public class RiwayatLaporan extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     /**
      * @param args the command line arguments
