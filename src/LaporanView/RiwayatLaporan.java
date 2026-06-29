@@ -6,15 +6,11 @@ package LaporanView;
 
 import controllers.LaporanController;
 import model.LaporanModel;
-import javax.swing.JOptionPane;
-import javax.swing.JFrame;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-/**
- *
- * @author reysa eka
- */
 public class RiwayatLaporan extends javax.swing.JFrame {
 
     private int idUser;
@@ -33,103 +29,103 @@ public class RiwayatLaporan extends javax.swing.JFrame {
         loadData();
     }
 
+    // ================= LOAD DATA =================
     private void loadData() {
         try {
             laporanList = laporanController.getLaporanByUser(idUser);
+
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
 
-            if (laporanList != null) {
-                for (LaporanModel l : laporanList) {
-                    Object[] row = new Object[]{
-                        l.getIdLaporan(),
-                        l.getPeriode(),
-                        l.getTanggalAwal(),
-                        l.getTanggalAkhir(),
-                        "Rp " + String.format("%,.0f", l.getTotalPemasukan()),
-                        "Rp " + String.format("%,.0f", l.getTotalPengeluaran()),
-                        "Rp " + String.format("%,.0f", l.getSaldo())
-                    };
-                    model.addRow(row);
-                }
+            if (laporanList == null) {
+                return;
             }
+
+            for (LaporanModel l : laporanList) {
+
+                model.addRow(new Object[]{
+                    l.getIdLaporan(),
+                    l.getPeriode(),
+                    l.getTanggalAwal(),
+                    l.getTanggalAkhir(),
+                    "Rp " + String.format("%,.0f", l.getTotalPemasukan()),
+                    "Rp " + String.format("%,.0f", l.getTotalPengeluaran()),
+                    "Rp " + String.format("%,.0f", l.getSaldo())
+                });
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Gagal memuat data!");
         }
     }
 
+    // ================= SEARCH FIX =================
     private void searchData(String keyword) {
-        try {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
 
-            if (laporanList != null) {
-                for (LaporanModel l : laporanList) {
-                    if (l.getPeriode().toLowerCase().contains(keyword.toLowerCase())
-                            || l.getTanggalAwal().contains(keyword)
-                            || l.getTanggalAkhir().contains(keyword)) {
-                        Object[] row = new Object[]{
-                            l.getIdLaporan(),
-                            l.getPeriode(),
-                            l.getTanggalAwal(),
-                            l.getTanggalAkhir(),
-                            "Rp " + String.format("%,.0f", l.getTotalPemasukan()),
-                            "Rp " + String.format("%,.0f", l.getTotalPengeluaran()),
-                            "Rp " + String.format("%,.0f", l.getSaldo())
-                        };
-                        model.addRow(row);
-                    }
-                }
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+
+        if (laporanList == null) {
+            return;
+        }
+
+        for (LaporanModel l : laporanList) {
+
+            String periode = (l.getPeriode() == null) ? "" : l.getPeriode();
+
+            boolean match
+                    = periode.toLowerCase().contains(keyword.toLowerCase())
+                    || (l.getTanggalAwal() != null && l.getTanggalAwal().contains(keyword))
+                    || (l.getTanggalAkhir() != null && l.getTanggalAkhir().contains(keyword));
+
+            if (match) {
+                model.addRow(new Object[]{
+                    l.getIdLaporan(),
+                    l.getPeriode(),
+                    l.getTanggalAwal(),
+                    l.getTanggalAkhir(),
+                    "Rp " + String.format("%,.0f", l.getTotalPemasukan()),
+                    "Rp " + String.format("%,.0f", l.getTotalPengeluaran()),
+                    "Rp " + String.format("%,.0f", l.getSaldo())
+                });
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-   private void deleteData() {
-    int selectedRow = jTable1.getSelectedRow();
+    // ================= DELETE =================
+    private void deleteData() {
 
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(
+        int row = jTable1.getSelectedRow();
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Pilih data terlebih dahulu!");
+            return;
+        }
+
+        int idLaporan = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
+
+        int confirm = JOptionPane.showConfirmDialog(
                 this,
-                "Pilih data laporan yang ingin dihapus terlebih dahulu!",
-                "Peringatan",
-                JOptionPane.WARNING_MESSAGE
+                "Yakin hapus laporan ID " + idLaporan + "?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION
         );
-        return;
-    }
 
-    int idLaporan = Integer.parseInt(
-            jTable1.getValueAt(selectedRow, 0).toString()
-    );
+        if (confirm == JOptionPane.YES_OPTION) {
 
-    int confirm = JOptionPane.showConfirmDialog(
-            this,
-            "Yakin ingin menghapus laporan dengan ID " + idLaporan + "?",
-            "Konfirmasi Hapus",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE
-    );
+            boolean ok = laporanController.hapusLaporan(idLaporan, idUser);
 
-    if (confirm == JOptionPane.YES_OPTION) {
-        boolean berhasil = laporanController.hapusLaporan(idLaporan, idUser);
-
-        if (berhasil) {
-            JOptionPane.showMessageDialog(this, "Data laporan berhasil dihapus!");
-
-            jTextField1.setText("");
-            loadData();
-        } else {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Data laporan gagal dihapus!",
-                    "Gagal",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Berhasil dihapus!");
+                jTextField1.setText("");
+                loadData();
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal hapus!");
+            }
         }
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -267,10 +263,12 @@ public class RiwayatLaporan extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String keyword = jTextField1.getText().trim();
+
         if (keyword.isEmpty()) {
             loadData();
         } else {
             searchData(keyword);
+
         }    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

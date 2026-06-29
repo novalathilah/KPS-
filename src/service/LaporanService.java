@@ -25,22 +25,25 @@ public class LaporanService {
         laporan.setTanggalAwal(tanggal);
         laporan.setTanggalAkhir(tanggal);
 
-        String sql = "SELECT "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, "
-                + "COUNT(*) AS jumlah_transaksi "
-                + "FROM transaksi t "
-                + "JOIN category c ON t.id_category = c.id_category "
-                + "WHERE t.id_user = ? AND t.tanggal = ?";
+        String sql =
+                "SELECT " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, " +
+                "COUNT(t.id_transaksi) AS jumlah_transaksi " +
+                "FROM transaksi t " +
+                "JOIN category c ON t.id_category = c.id_category " +
+                "WHERE t.id_user = ? AND DATE(t.tanggal) = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idUser);
-            pstmt.setString(2, tanggal);
-            ResultSet rs = pstmt.executeQuery();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ps.setString(2, tanggal);
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 double pemasukan = rs.getDouble("pemasukan");
                 double pengeluaran = rs.getDouble("pengeluaran");
+
                 laporan.setTotalPemasukan(pemasukan);
                 laporan.setTotalPengeluaran(pengeluaran);
                 laporan.setSaldo(pemasukan - pengeluaran);
@@ -49,6 +52,7 @@ public class LaporanService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return laporan;
     }
 
@@ -59,23 +63,26 @@ public class LaporanService {
         laporan.setTanggalAwal(tglMulai);
         laporan.setTanggalAkhir(tglSelesai);
 
-        String sql = "SELECT "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, "
-                + "COUNT(*) AS jumlah_transaksi "
-                + "FROM transaksi t "
-                + "JOIN category c ON t.id_category = c.id_category "
-                + "WHERE t.id_user = ? AND t.tanggal BETWEEN ? AND ?";
+        String sql =
+                "SELECT " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, " +
+                "COUNT(t.id_transaksi) AS jumlah_transaksi " +
+                "FROM transaksi t " +
+                "JOIN category c ON t.id_category = c.id_category " +
+                "WHERE t.id_user = ? AND DATE(t.tanggal) BETWEEN ? AND ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idUser);
-            pstmt.setString(2, tglMulai);
-            pstmt.setString(3, tglSelesai);
-            ResultSet rs = pstmt.executeQuery();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ps.setString(2, tglMulai);
+            ps.setString(3, tglSelesai);
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 double pemasukan = rs.getDouble("pemasukan");
                 double pengeluaran = rs.getDouble("pengeluaran");
+
                 laporan.setTotalPemasukan(pemasukan);
                 laporan.setTotalPengeluaran(pengeluaran);
                 laporan.setSaldo(pemasukan - pengeluaran);
@@ -84,6 +91,7 @@ public class LaporanService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return laporan;
     }
 
@@ -91,25 +99,29 @@ public class LaporanService {
     public LaporanModel getLaporanBulanan(int idUser, String bulan) {
         LaporanModel laporan = new LaporanModel();
         laporan.setPeriode("bulanan");
+
         laporan.setTanggalAwal(bulan + "-01");
-        laporan.setTanggalAkhir(bulan + "-01");
+        laporan.setTanggalAkhir(bulan + "-31");
 
-        String sql = "SELECT "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, "
-                + "COUNT(*) AS jumlah_transaksi "
-                + "FROM transaksi t "
-                + "JOIN category c ON t.id_category = c.id_category "
-                + "WHERE t.id_user = ? AND DATE_FORMAT(t.tanggal, '%Y-%m') = ?";
+        String sql =
+                "SELECT " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, " +
+                "COUNT(t.id_transaksi) AS jumlah_transaksi " +
+                "FROM transaksi t " +
+                "JOIN category c ON t.id_category = c.id_category " +
+                "WHERE t.id_user = ? AND DATE_FORMAT(t.tanggal, '%Y-%m') = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idUser);
-            pstmt.setString(2, bulan);
-            ResultSet rs = pstmt.executeQuery();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ps.setString(2, bulan);
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 double pemasukan = rs.getDouble("pemasukan");
                 double pengeluaran = rs.getDouble("pengeluaran");
+
                 laporan.setTotalPemasukan(pemasukan);
                 laporan.setTotalPengeluaran(pengeluaran);
                 laporan.setSaldo(pemasukan - pengeluaran);
@@ -118,6 +130,7 @@ public class LaporanService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return laporan;
     }
 
@@ -125,25 +138,29 @@ public class LaporanService {
     public LaporanModel getLaporanTahunan(int idUser, int tahun) {
         LaporanModel laporan = new LaporanModel();
         laporan.setPeriode("tahunan");
+
         laporan.setTanggalAwal(tahun + "-01-01");
         laporan.setTanggalAkhir(tahun + "-12-31");
 
-        String sql = "SELECT "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, "
-                + "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, "
-                + "COUNT(*) AS jumlah_transaksi "
-                + "FROM transaksi t "
-                + "JOIN category c ON t.id_category = c.id_category "
-                + "WHERE t.id_user = ? AND YEAR(t.tanggal) = ?";
+        String sql =
+                "SELECT " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pemasukan' THEN t.jumlah ELSE 0 END), 0) AS pemasukan, " +
+                "COALESCE(SUM(CASE WHEN c.tipe = 'Pengeluaran' THEN t.jumlah ELSE 0 END), 0) AS pengeluaran, " +
+                "COUNT(t.id_transaksi) AS jumlah_transaksi " +
+                "FROM transaksi t " +
+                "JOIN category c ON t.id_category = c.id_category " +
+                "WHERE t.id_user = ? AND YEAR(t.tanggal) = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idUser);
-            pstmt.setInt(2, tahun);
-            ResultSet rs = pstmt.executeQuery();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ps.setInt(2, tahun);
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 double pemasukan = rs.getDouble("pemasukan");
                 double pengeluaran = rs.getDouble("pengeluaran");
+
                 laporan.setTotalPemasukan(pemasukan);
                 laporan.setTotalPengeluaran(pengeluaran);
                 laporan.setSaldo(pemasukan - pengeluaran);
@@ -152,107 +169,109 @@ public class LaporanService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return laporan;
     }
 
     // ========== SIMPAN ==========
     public boolean simpanLaporan(LaporanModel laporan) {
-        String sql = "INSERT INTO laporan (id_user, periode, tanggal_awal, tanggal_akhir, total_pemasukan, total_pengeluaran, saldo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql =
+                "INSERT INTO laporan " +
+                "(id_user, periode, tanggal_awal, tanggal_akhir, total_pemasukan, total_pengeluaran, saldo) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, laporan.getIdUser());
-            pstmt.setString(2, laporan.getPeriode());
-            pstmt.setString(3, laporan.getTanggalAwal());
-            pstmt.setString(4, laporan.getTanggalAkhir());
-            pstmt.setDouble(5, laporan.getTotalPemasukan());
-            pstmt.setDouble(6, laporan.getTotalPengeluaran());
-            pstmt.setDouble(7, laporan.getSaldo());
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, laporan.getIdUser());
+            ps.setString(2, laporan.getPeriode());
+            ps.setString(3, laporan.getTanggalAwal());
+            ps.setString(4, laporan.getTanggalAkhir());
+            ps.setDouble(5, laporan.getTotalPemasukan());
+            ps.setDouble(6, laporan.getTotalPengeluaran());
+            ps.setDouble(7, laporan.getSaldo());
 
-            return pstmt.executeUpdate() > 0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // ========== AMBIL SEMUA ==========
+    // ========== RIWAYAT ==========
     public List<LaporanModel> getLaporanByUser(int idUser) {
         List<LaporanModel> list = new ArrayList<>();
+
         String sql = "SELECT * FROM laporan WHERE id_user = ? ORDER BY id_laporan DESC";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idUser);
-            ResultSet rs = pstmt.executeQuery();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                LaporanModel laporan = new LaporanModel();
-                laporan.setIdLaporan(rs.getInt("id_laporan"));
-                laporan.setIdUser(rs.getInt("id_user"));
-                laporan.setPeriode(rs.getString("periode"));
-                laporan.setTanggalAwal(rs.getString("tanggal_awal"));
-                laporan.setTanggalAkhir(rs.getString("tanggal_akhir"));
-                laporan.setTotalPemasukan(rs.getDouble("total_pemasukan"));
-                laporan.setTotalPengeluaran(rs.getDouble("total_pengeluaran"));
-                laporan.setSaldo(rs.getDouble("saldo"));
-                list.add(laporan);
+                LaporanModel l = new LaporanModel();
+                l.setIdLaporan(rs.getInt("id_laporan"));
+                l.setIdUser(rs.getInt("id_user"));
+                l.setPeriode(rs.getString("periode"));
+                l.setTanggalAwal(rs.getString("tanggal_awal"));
+                l.setTanggalAkhir(rs.getString("tanggal_akhir"));
+                l.setTotalPemasukan(rs.getDouble("total_pemasukan"));
+                l.setTotalPengeluaran(rs.getDouble("total_pengeluaran"));
+                l.setSaldo(rs.getDouble("saldo"));
+                list.add(l);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return list;
     }
 
-    // ========== HAPUS ==========
+    // ========== DELETE ==========
     public boolean hapusLaporan(int idLaporan, int idUser) {
         String sql = "DELETE FROM laporan WHERE id_laporan = ? AND id_user = ?";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idLaporan);
-            pstmt.setInt(2, idUser);
-            return pstmt.executeUpdate() > 0;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idLaporan);
+            ps.setInt(2, idUser);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    // ========== TOTAL PEMASUKAN ==========
+    // ========== TOTAL ==========
     public double getTotalPemasukan(int idUser) {
-        String sql = "SELECT COALESCE(SUM(t.jumlah), 0) as total FROM transaksi t "
-                + "JOIN category c ON t.id_category = c.id_category "
-                + "WHERE t.id_user = ? AND c.tipe = 'Pemasukan'";
+        String sql =
+                "SELECT COALESCE(SUM(t.jumlah),0) AS total " +
+                "FROM transaksi t JOIN category c ON t.id_category=c.id_category " +
+                "WHERE t.id_user=? AND c.tipe='Pemasukan'";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idUser);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getDouble("total");
-            }
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getDouble("total");
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
-    // ========== TOTAL PENGELUARAN ==========
     public double getTotalPengeluaran(int idUser) {
-        String sql = "SELECT COALESCE(SUM(t.jumlah), 0) as total FROM transaksi t "
-                + "JOIN category c ON t.id_category = c.id_category "
-                + "WHERE t.id_user = ? AND c.tipe = 'Pengeluaran'";
+        String sql =
+                "SELECT COALESCE(SUM(t.jumlah),0) AS total " +
+                "FROM transaksi t JOIN category c ON t.id_category=c.id_category " +
+                "WHERE t.id_user=? AND c.tipe='Pengeluaran'";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, idUser);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getDouble("total");
-            }
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idUser);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getDouble("total");
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
-    // ========== SALDO ==========
     public double getSaldo(int idUser) {
         return getTotalPemasukan(idUser) - getTotalPengeluaran(idUser);
     }

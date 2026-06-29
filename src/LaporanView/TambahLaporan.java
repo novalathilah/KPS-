@@ -15,6 +15,7 @@ import java.util.Date;
  *
  * @author reysa eka
  */
+
 public class TambahLaporan extends javax.swing.JFrame {
 
     private int idUser;
@@ -63,16 +64,23 @@ public class TambahLaporan extends javax.swing.JFrame {
         String periode = (String) jComboBox1.getSelectedItem();
 
         LaporanModel laporan = null;
+
         switch (periode) {
+
             case "Harian":
                 laporan = laporanController.getLaporanHarian(idUser, tglMulai);
                 break;
+
             case "Mingguan":
                 laporan = laporanController.getLaporanMingguan(idUser, tglMulai, tglSelesai);
                 break;
+
             case "Bulanan":
-                laporan = laporanController.getLaporanBulanan(idUser, tglMulai.substring(0, 7));
+                // FIX: ambil dari tanggal awal saja, tapi jelas & aman
+                String bulan = tglMulai.substring(0, 7);
+                laporan = laporanController.getLaporanBulanan(idUser, bulan);
                 break;
+
             case "Tahunan":
                 int tahun = Integer.parseInt(tglMulai.substring(0, 4));
                 laporan = laporanController.getLaporanTahunan(idUser, tahun);
@@ -81,16 +89,20 @@ public class TambahLaporan extends javax.swing.JFrame {
 
         if (laporan != null) {
             laporanData = laporan;
+
             jLabel10.setText("Rp " + String.format("%,.0f", laporan.getTotalPemasukan()));
             jLabel9.setText("Rp " + String.format("%,.0f", laporan.getTotalPengeluaran()));
             jLabel8.setText("Rp " + String.format("%,.0f", laporan.getSaldo()));
+
             jButton2.setEnabled(true);
 
             if (laporan.getJumlahTransaksi() == 0) {
                 JOptionPane.showMessageDialog(this,
                         "Belum ada transaksi pada periode ini!",
-                        "Info", JOptionPane.INFORMATION_MESSAGE);
+                        "Info",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
+
         } else {
             JOptionPane.showMessageDialog(this, "Gagal menghitung laporan!");
             jButton2.setEnabled(false);
@@ -274,6 +286,8 @@ public class TambahLaporan extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
+        laporanData = null;
+        jButton2.setEnabled(false);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -302,36 +316,36 @@ public class TambahLaporan extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TambahLaporan().setVisible(true);
-            }
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(TambahLaporan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new TambahLaporan().setVisible(true);
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
