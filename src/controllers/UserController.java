@@ -33,8 +33,8 @@ public class UserController {
     // REGISTER
     // ==========================
     public String registerUser(String username,
-                               String email,
-                               String password) {
+            String email,
+            String password) {
 
         username = username == null ? "" : username.trim();
         email = email == null ? "" : email.trim();
@@ -54,8 +54,8 @@ public class UserController {
             return "Email tidak boleh kosong.";
         }
 
-        String emailRegex =
-                "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        String emailRegex
+                = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
 
         if (!email.matches(emailRegex)) {
             return "Format email tidak valid.";

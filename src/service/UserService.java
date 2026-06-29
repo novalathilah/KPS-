@@ -30,9 +30,7 @@ public class UserService {
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getUsername().trim());
             ps.setString(2, user.getEmail().trim());
@@ -59,9 +57,7 @@ public class UserService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, usernameOrEmail);
             ps.setString(2, usernameOrEmail);
@@ -106,10 +102,7 @@ public class UserService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -137,9 +130,7 @@ public class UserService {
         String sql = "DELETE FROM users WHERE id_user = ?";
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idUser);
 
@@ -168,9 +159,7 @@ public class UserService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getUsername().trim());
             ps.setString(2, user.getEmail().trim());
@@ -196,9 +185,7 @@ public class UserService {
         String sql = "SELECT 1 FROM users WHERE username = ? LIMIT 1";
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, username);
 
@@ -225,9 +212,7 @@ public class UserService {
         String sql = "SELECT 1 FROM users WHERE email = ? LIMIT 1";
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, email);
 

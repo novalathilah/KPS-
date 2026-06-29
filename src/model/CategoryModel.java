@@ -44,10 +44,10 @@ public class CategoryModel {
 
     @Override
     public String toString() {
-        return "CategoryModel{" +
-                "idCategory=" + idCategory +
-                ", namaCategory='" + namaCategory + '\'' +
-                ", tipe='" + tipe + '\'' +
-                '}';
+        return "CategoryModel{"
+                + "idCategory=" + idCategory
+                + ", namaCategory='" + namaCategory + '\''
+                + ", tipe='" + tipe + '\''
+                + '}';
     }
 }

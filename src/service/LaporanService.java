@@ -184,7 +184,7 @@ public class LaporanService {
 
         return laporan;
     }
-    
+
     //SIMPAN LAPORAN
     public boolean simpanLaporan(LaporanModel laporan) {
 

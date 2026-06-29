@@ -265,7 +265,7 @@ public class TambahTransaksiView extends javax.swing.JFrame {
         if (sukses) {
 
             if (dashboard != null) {
-                dashboard.setUserId(idUser); 
+                dashboard.setUserId(idUser);
             }
 
             JOptionPane.showMessageDialog(this, "Transaksi berhasil ditambahkan!");

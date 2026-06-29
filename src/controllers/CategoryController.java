@@ -29,8 +29,8 @@ public class CategoryController {
     // UPDATE
     // ==========================
     public boolean editCategory(int idCategory,
-                                String namaCategory,
-                                String tipe) {
+            String namaCategory,
+            String tipe) {
 
         if (idCategory <= 0) {
             return false;

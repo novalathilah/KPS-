@@ -10,8 +10,6 @@ import CategoryView.LihatCategoryView;
 import UsersView.LoginView;
 import TransaksiView.TambahTransaksiView;
 import TransaksiView.LihatTransaksiView;
-import LaporanView.RiwayatLaporan;
-import LaporanView.TambahLaporan;
 import controllers.TransaksiController;
 import java.text.DecimalFormat;
 

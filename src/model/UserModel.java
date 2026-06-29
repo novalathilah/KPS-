@@ -20,7 +20,6 @@ public class UserModel {
     }
 
     // Getter & Setter
-
     public int getIdUser() {
         return idUser;
     }
@@ -55,10 +54,10 @@ public class UserModel {
 
     @Override
     public String toString() {
-        return "UserModel{" +
-                "idUser=" + idUser +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "UserModel{"
+                + "idUser=" + idUser
+                + ", username='" + username + '\''
+                + ", email='" + email + '\''
+                + '}';
     }
 }

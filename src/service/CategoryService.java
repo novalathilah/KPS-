@@ -28,9 +28,7 @@ public class CategoryService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, category.getNamaCategory());
             ps.setString(2, category.getTipe());
@@ -67,10 +65,7 @@ public class CategoryService {
         model.addColumn("Tipe");
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -109,10 +104,7 @@ public class CategoryService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -149,9 +141,7 @@ public class CategoryService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idCategory);
 
@@ -192,9 +182,7 @@ public class CategoryService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, category.getNamaCategory());
             ps.setString(2, category.getTipe());
@@ -222,9 +210,7 @@ public class CategoryService {
                 """;
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idCategory);
 
@@ -262,9 +248,7 @@ public class CategoryService {
         model.addColumn("Tipe");
 
         try (
-                Connection conn = Database.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+                Connection conn = Database.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, "%" + keyword + "%");
             ps.setString(2, "%" + keyword + "%");

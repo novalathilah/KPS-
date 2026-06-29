@@ -191,7 +191,7 @@ public class TransaksiService {
         return 0;
     }
 
-    // Total pemasukan (FIX LOWER + SAFE)
+    // Total pemasukan 
     public double getTotalPemasukan(int idUser) {
 
         String sql =
@@ -217,7 +217,7 @@ public class TransaksiService {
         return 0;
     }
 
-    // Total pengeluaran (FIX LOWER + SAFE)
+    // Total pengeluaran 
     public double getTotalPengeluaran(int idUser) {
 
         String sql =
