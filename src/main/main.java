@@ -10,32 +10,59 @@ import CategoryView.LihatCategoryView;
 import UsersView.LoginView;
 import TransaksiView.TambahTransaksiView;
 import TransaksiView.LihatTransaksiView;
+import LaporanView.RiwayatLaporan;
+import LaporanView.TambahLaporan;
+import controllers.TransaksiController;
+import java.text.DecimalFormat;
 
-/**
- *
- * @author reysa eka
- */
 public class main extends javax.swing.JFrame {
 
-    // ========== VARIABLE SESSION ==========
+    // ========== SESSION ==========
     private String currentUser = "Guest";
     private boolean isLoggedIn = false;
     private int currentUserId = 0;
+
+    private final TransaksiController transaksiController = new TransaksiController();
 
     public main() {
         initComponents();
         loadDashboard();
     }
 
-    // ========== METHOD UNTUK MENGELOLA SESSION ==========
+    // ========== DASHBOARD ==========
     private void loadDashboard() {
+
         if (isLoggedIn) {
+
             jLabel3.setText("Users : " + currentUser);
+
+            int total = transaksiController.getTotalTransaksi(currentUserId);
+            double pemasukan = transaksiController.getTotalPemasukan(currentUserId);
+            double pengeluaran = transaksiController.getTotalPengeluaran(currentUserId);
+
+            updateDashboardCard(total, pemasukan, pengeluaran);
+
         } else {
+
             jLabel3.setText("Users : Guest (Belum Login)");
+            updateDashboardCard(0, 0, 0);
         }
     }
 
+    // ========== UPDATE CARD ==========
+    public void updateDashboardCard(int totalTransaksi, double pemasukan, double pengeluaran) {
+
+        DecimalFormat df = new DecimalFormat("#,###");
+
+        double saldo = pemasukan - pengeluaran;
+
+        jLabel4.setText("Total Transaksi : " + totalTransaksi);
+        jLabel5.setText("Total Pemasukan : Rp " + df.format(pemasukan));
+        jLabel6.setText("Total Pengeluaran : Rp " + df.format(pengeluaran));
+        jLabel9.setText("Saldo : Rp " + df.format(saldo));
+    }
+
+    // ========== SESSION ==========
     public void setUser(String username) {
         this.currentUser = username;
         this.isLoggedIn = true;
@@ -44,25 +71,28 @@ public class main extends javax.swing.JFrame {
 
     public void setUserId(int idUser) {
         this.currentUserId = idUser;
+        loadDashboard();
     }
 
     public int getCurrentUserId() {
         return currentUserId;
     }
 
+    // ========== LOGIN CHECK ==========
     private boolean checkLogin() {
         if (!isLoggedIn) {
+
             int pilihan = JOptionPane.showConfirmDialog(
                     this,
                     "Anda harus login terlebih dahulu!\nIngin login sekarang?",
                     "Login Diperlukan",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
+                    JOptionPane.YES_NO_OPTION
             );
 
             if (pilihan == JOptionPane.YES_OPTION) {
                 openLoginView();
             }
+
             return false;
         }
         return true;
@@ -75,11 +105,15 @@ public class main extends javax.swing.JFrame {
         this.setVisible(false);
     }
 
+    // ========== LOGOUT ==========
     private void logout() {
+
         currentUser = "Guest";
         isLoggedIn = false;
         currentUserId = 0;
+
         loadDashboard();
+
         JOptionPane.showMessageDialog(this, "Anda telah logout!");
     }
 
@@ -92,10 +126,20 @@ public class main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel7 = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel8 = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JSeparator();
+        jLabel9 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -122,6 +166,18 @@ public class main extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jLabel4.setText("Total Transaksi        :");
+
+        jLabel5.setText("Total Pemasukan    : ");
+
+        jLabel6.setText("Total Pengeluaran  : ");
+
+        jLabel7.setText("Selamat Datang ...");
+
+        jLabel8.setText("CARD SUMMARY");
+
+        jLabel9.setText("Saldo                        :   ");
 
         jMenu1.setText("Menu");
         jMenuBar1.add(jMenu1);
@@ -209,14 +265,39 @@ public class main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jLabel1)
-                        .addGap(0, 54, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
+                        .addContainerGap()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel9)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGap(0, 54, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jSeparator3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator4)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -226,8 +307,25 @@ public class main extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 189, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8)
+                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jButton1))
                 .addContainerGap())
@@ -300,9 +398,13 @@ public class main extends javax.swing.JFrame {
         if (!checkLogin()) {
             return;
         }
+
         TambahTransaksiView tambahTransaksi = new TambahTransaksiView();
         tambahTransaksi.setCurrentUser(currentUser);
         tambahTransaksi.setIdUser(currentUserId);
+
+        tambahTransaksi.setDashboard(this);
+
         tambahTransaksi.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -364,6 +466,12 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -375,5 +483,9 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     // End of variables declaration//GEN-END:variables
 }

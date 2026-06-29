@@ -3,21 +3,44 @@ package controllers;
 import model.TransaksiModel;
 import service.TransaksiService;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransaksiController {
 
     private final TransaksiService service = new TransaksiService();
 
-    // ========== AMBIL TRANSAKSI BERDASARKAN USER ==========
+    // ========== DASHBOARD ==========
+    public int getTotalTransaksi(int idUser) {
+        if (idUser <= 0) {
+            return 0;
+        }
+        return service.getTotalTransaksi(idUser);
+    }
+
+    public double getTotalPemasukan(int idUser) {
+        if (idUser <= 0) {
+            return 0;
+        }
+        return service.getTotalPemasukan(idUser);
+    }
+
+    public double getTotalPengeluaran(int idUser) {
+        if (idUser <= 0) {
+            return 0;
+        }
+        return service.getTotalPengeluaran(idUser);
+    }
+
+    // ========== GET TRANSAKSI ==========
     public List<TransaksiModel> getTransaksiByUser(int idUser) {
         if (idUser <= 0) {
-            return null;
+            return new ArrayList<>(); // FIX
         }
         return service.getTransaksiByUser(idUser);
     }
 
-    // ========== HAPUS TRANSAKSI ==========
+    // ========== HAPUS ==========
     public boolean hapusTransaksi(int idTransaksi) {
         if (idTransaksi <= 0) {
             return false;
@@ -25,94 +48,60 @@ public class TransaksiController {
         return service.hapusTransaksi(idTransaksi);
     }
 
-    // ========== TAMBAH TRANSAKSI ==========
+    // ========== TAMBAH ==========
     public boolean tambahTransaksi(int idUser, int idCategory, double jumlah,
             String deskripsi, String tanggalStr) {
 
-        if (idUser <= 0) {
-            System.out.println("Error: ID User tidak valid!");
+        if (idUser <= 0 || idCategory <= 0 || jumlah <= 0) {
             return false;
         }
-
-        if (idCategory <= 0) {
-            System.out.println("Error: ID Category tidak valid!");
-            return false;
-        }
-
-        if (jumlah <= 0) {
-            System.out.println("Error: Jumlah harus lebih dari 0!");
-            return false;
-        }
-
         if (tanggalStr == null || tanggalStr.trim().isEmpty()) {
-            System.out.println("Error: Tanggal tidak boleh kosong!");
             return false;
         }
 
         Date tanggal;
+
         try {
             tanggal = Date.valueOf(tanggalStr);
         } catch (IllegalArgumentException e) {
-            System.out.println("Error: Format tanggal tidak valid! Gunakan yyyy-MM-dd");
+            System.out.println("Format tanggal salah (yyyy-MM-dd)");
             return false;
         }
 
-        TransaksiModel transaksi = new TransaksiModel();
-        transaksi.setIdUser(idUser);
-        transaksi.setIdCategory(idCategory);
-        transaksi.setJumlah(jumlah);
-        transaksi.setDeskripsi(deskripsi != null ? deskripsi.trim() : "");
-        transaksi.setTanggal(tanggal);
+        TransaksiModel t = new TransaksiModel();
+        t.setIdUser(idUser);
+        t.setIdCategory(idCategory);
+        t.setJumlah(jumlah);
+        t.setDeskripsi(deskripsi != null ? deskripsi.trim() : "");
+        t.setTanggal(tanggal);
 
-        return service.tambahTransaksi(transaksi);
+        return service.tambahTransaksi(t);
     }
 
-    // ========== UPDATE TRANSAKSI (EDIT) ==========
+    // ========== UPDATE ==========
     public boolean updateTransaksi(int idTransaksi, int idUser, int idCategory,
             double jumlah, String deskripsi, String tanggalStr) {
 
-        // VALIDASI
-        if (idTransaksi <= 0) {
-            System.out.println("Error: ID Transaksi tidak valid!");
-            return false;
-        }
-
-        if (idUser <= 0) {
-            System.out.println("Error: ID User tidak valid!");
-            return false;
-        }
-
-        if (idCategory <= 0) {
-            System.out.println("Error: ID Category tidak valid!");
-            return false;
-        }
-
-        if (jumlah <= 0) {
-            System.out.println("Error: Jumlah harus lebih dari 0!");
-            return false;
-        }
-
-        if (tanggalStr == null || tanggalStr.trim().isEmpty()) {
-            System.out.println("Error: Tanggal tidak boleh kosong!");
+        if (idTransaksi <= 0 || idUser <= 0 || idCategory <= 0 || jumlah <= 0) {
             return false;
         }
 
         Date tanggal;
+
         try {
             tanggal = Date.valueOf(tanggalStr);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: Format tanggal tidak valid! Gunakan yyyy-MM-dd");
+        } catch (Exception e) {
             return false;
         }
 
-        TransaksiModel transaksi = new TransaksiModel();
-        transaksi.setIdTransaksi(idTransaksi);
-        transaksi.setIdUser(idUser);
-        transaksi.setIdCategory(idCategory);
-        transaksi.setJumlah(jumlah);
-        transaksi.setDeskripsi(deskripsi != null ? deskripsi.trim() : "");
-        transaksi.setTanggal(tanggal);
+        TransaksiModel t = new TransaksiModel();
+        t.setIdTransaksi(idTransaksi);
+        t.setIdUser(idUser);
+        t.setIdCategory(idCategory);
+        t.setJumlah(jumlah);
+        t.setDeskripsi(deskripsi != null ? deskripsi.trim() : "");
+        t.setTanggal(tanggal);
 
-        return service.update(transaksi);
+        return service.update(t);
     }
 }

@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import main.main;
 
 /**
  *
@@ -24,6 +25,7 @@ public class TambahTransaksiView extends javax.swing.JFrame {
     private TransaksiController transaksiController;
     private CategoryController categoryController;
     private int selectedIdCategory = 0;
+    private main dashboard;
 
     public TambahTransaksiView() {
         initComponents();
@@ -39,7 +41,13 @@ public class TambahTransaksiView extends javax.swing.JFrame {
     }
 
     public void setIdUser(int idUser) {
+        this.dashboard = dashboard;
         this.idUser = idUser;
+
+    }
+
+    public void setDashboard(main dashboard) {
+        this.dashboard = dashboard;
     }
 
     private void loadCategories() {
@@ -250,14 +258,19 @@ public class TambahTransaksiView extends javax.swing.JFrame {
         // Ambil data dari form
         String deskripsi = jTextArea1.getText().trim();
 
-        // Panggil Controller (TANPA jenisTransaksi)
+        // Panggil Controller 
         boolean sukses = transaksiController.tambahTransaksi(
                 idUser, selectedIdCategory, jumlah, deskripsi, tanggalStr
         );
-
         if (sukses) {
+
+            if (dashboard != null) {
+                dashboard.setUserId(idUser); 
+            }
+
             JOptionPane.showMessageDialog(this, "Transaksi berhasil ditambahkan!");
             clearForm();
+
         } else {
             JOptionPane.showMessageDialog(this, "Gagal menambahkan transaksi!");
         }

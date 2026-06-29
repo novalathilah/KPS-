@@ -9,95 +9,44 @@ public class LaporanController {
     private LaporanService laporanService = new LaporanService();
 
     private boolean validateIdUser(int idUser) {
-        if (idUser <= 0) {
-            System.out.println("Error: ID User tidak valid!");
-            return false;
-        }
-        return true;
+        return idUser > 0;
     }
 
     private boolean validateTanggal(String tanggal) {
-        if (tanggal == null || tanggal.trim().isEmpty()) {
-            System.out.println("Error: Tanggal tidak boleh kosong!");
-            return false;
-        }
-        if (!tanggal.matches("\\d{4}-\\d{2}-\\d{2}")) {
-            System.out.println("Error: Format tanggal harus yyyy-MM-dd!");
-            return false;
-        }
-        return true;
+        return tanggal != null && tanggal.matches("\\d{4}-\\d{2}-\\d{2}");
     }
 
     private boolean validateBulan(String bulan) {
-        if (bulan == null || bulan.trim().isEmpty()) {
-            System.out.println("Error: Bulan tidak boleh kosong!");
-            return false;
-        }
-        if (!bulan.matches("\\d{4}-\\d{2}")) {
-            System.out.println("Error: Format bulan harus yyyy-MM!");
-            return false;
-        }
-        return true;
+        return bulan != null && bulan.matches("\\d{4}-\\d{2}");
     }
 
     private boolean validateTahun(int tahun) {
-        if (tahun < 2000 || tahun > 2100) {
-            System.out.println("Error: Tahun tidak valid!");
-            return false;
-        }
-        return true;
+        return tahun >= 2000 && tahun <= 2100;
     }
 
-    private boolean validateRange(String tglMulai, String tglSelesai) {
-        if (tglMulai == null || tglMulai.trim().isEmpty()
-                || tglSelesai == null || tglSelesai.trim().isEmpty()) {
-            System.out.println("Error: Tanggal tidak boleh kosong!");
-            return false;
-        }
-        if (!tglMulai.matches("\\d{4}-\\d{2}-\\d{2}")
-                || !tglSelesai.matches("\\d{4}-\\d{2}-\\d{2}")) {
-            System.out.println("Error: Format tanggal harus yyyy-MM-dd!");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateLaporan(LaporanModel laporan) {
-        if (laporan == null) {
-            System.out.println("Error: Laporan tidak boleh kosong!");
-            return false;
-        }
-        return true;
+    private boolean validateRange(String a, String b) {
+        return validateTanggal(a) && validateTanggal(b);
     }
 
     // HARIAN
     public LaporanModel getLaporanHarian(int idUser, String tanggal) {
-        if (!validateIdUser(idUser)) {
-            return null;
-        }
-        if (!validateTanggal(tanggal)) {
+        if (!validateIdUser(idUser) || !validateTanggal(tanggal)) {
             return null;
         }
         return laporanService.getLaporanHarian(idUser, tanggal);
     }
 
     // MINGGUAN
-    public LaporanModel getLaporanMingguan(int idUser, String tglMulai, String tglSelesai) {
-        if (!validateIdUser(idUser)) {
+    public LaporanModel getLaporanMingguan(int idUser, String a, String b) {
+        if (!validateIdUser(idUser) || !validateRange(a, b)) {
             return null;
         }
-        if (!validateRange(tglMulai, tglSelesai)) {
-            return null;
-        }
-        return laporanService.getLaporanMingguan(idUser, tglMulai, tglSelesai);
+        return laporanService.getLaporanMingguan(idUser, a, b);
     }
 
     // BULANAN
     public LaporanModel getLaporanBulanan(int idUser, String bulan) {
-        if (!validateIdUser(idUser)) {
-            return null;
-        }
-        if (!validateBulan(bulan)) {
+        if (!validateIdUser(idUser) || !validateBulan(bulan)) {
             return null;
         }
         return laporanService.getLaporanBulanan(idUser, bulan);
@@ -105,10 +54,7 @@ public class LaporanController {
 
     // TAHUNAN
     public LaporanModel getLaporanTahunan(int idUser, int tahun) {
-        if (!validateIdUser(idUser)) {
-            return null;
-        }
-        if (!validateTahun(tahun)) {
+        if (!validateIdUser(idUser) || !validateTahun(tahun)) {
             return null;
         }
         return laporanService.getLaporanTahunan(idUser, tahun);
@@ -116,16 +62,13 @@ public class LaporanController {
 
     // SIMPAN
     public boolean simpanLaporan(LaporanModel laporan) {
-        if (!validateLaporan(laporan)) {
-            return false;
-        }
-        if (!validateIdUser(laporan.getIdUser())) {
+        if (laporan == null || !validateIdUser(laporan.getIdUser())) {
             return false;
         }
         return laporanService.simpanLaporan(laporan);
     }
 
-    // AMBIL SEMUA
+    // RIWAYAT
     public List<LaporanModel> getLaporanByUser(int idUser) {
         if (!validateIdUser(idUser)) {
             return null;
@@ -133,19 +76,15 @@ public class LaporanController {
         return laporanService.getLaporanByUser(idUser);
     }
 
-    // HAPUS
+    // DELETE
     public boolean hapusLaporan(int idLaporan, int idUser) {
-        if (!validateIdUser(idUser)) {
-            return false;
-        }
-        if (idLaporan <= 0) {
-            System.out.println("Error: ID Laporan tidak valid!");
+        if (!validateIdUser(idUser) || idLaporan <= 0) {
             return false;
         }
         return laporanService.hapusLaporan(idLaporan, idUser);
     }
 
-    // TOTAL PEMASUKAN
+    // TOTAL
     public double getTotalPemasukan(int idUser) {
         if (!validateIdUser(idUser)) {
             return 0;
@@ -153,7 +92,6 @@ public class LaporanController {
         return laporanService.getTotalPemasukan(idUser);
     }
 
-    // TOTAL PENGELUARAN
     public double getTotalPengeluaran(int idUser) {
         if (!validateIdUser(idUser)) {
             return 0;
@@ -161,7 +99,6 @@ public class LaporanController {
         return laporanService.getTotalPengeluaran(idUser);
     }
 
-    // SALDO
     public double getSaldo(int idUser) {
         if (!validateIdUser(idUser)) {
             return 0;
