@@ -7,12 +7,11 @@ public class UserModel {
     private String email;
     private String password;
 
-    // Constructor Kosong
+    // Constructor kosong
     public UserModel() {
-
     }
 
-    // Constructor Berisi
+    // Constructor lengkap
     public UserModel(int idUser, String username, String email, String password) {
         this.idUser = idUser;
         this.username = username;
@@ -20,7 +19,8 @@ public class UserModel {
         this.password = password;
     }
 
-    // Getter dan Setter (Wajib ada agar data bisa diakses oleh Service/Controller)
+    // Getter & Setter
+
     public int getIdUser() {
         return idUser;
     }
@@ -51,5 +51,14 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "idUser=" + idUser +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

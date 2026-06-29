@@ -6,6 +6,18 @@ public class CategoryModel {
     private String namaCategory;
     private String tipe;
 
+    // Constructor kosong
+    public CategoryModel() {
+    }
+
+    // Constructor lengkap
+    public CategoryModel(int idCategory, String namaCategory, String tipe) {
+        this.idCategory = idCategory;
+        this.namaCategory = namaCategory;
+        this.tipe = tipe;
+    }
+
+    // Getter & Setter
     public int getIdCategory() {
         return idCategory;
     }
@@ -28,5 +40,14 @@ public class CategoryModel {
 
     public void setTipe(String tipe) {
         this.tipe = tipe;
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryModel{" +
+                "idCategory=" + idCategory +
+                ", namaCategory='" + namaCategory + '\'' +
+                ", tipe='" + tipe + '\'' +
+                '}';
     }
 }

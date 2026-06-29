@@ -2,86 +2,157 @@ package controllers;
 
 import model.UserModel;
 import service.UserService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserController {
 
-    // memanggil Service
-    private UserService userService = new UserService(); // FIX: huruf kecil biar sesuai Java convention
+    private final UserService userService = new UserService();
 
-    // Controller untuk Login
-    public UserModel loginUser(String username, String password) {
-        if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
+    // ==========================
+    // LOGIN
+    // ==========================
+    public UserModel loginUser(String usernameOrEmail, String password) {
+
+        if (usernameOrEmail == null || usernameOrEmail.trim().isEmpty()) {
             return null;
-        }
-        return userService.login(username, password);
-    }
-
-    // Controller untuk Register
-    public String registerUser(String username, String email, String password) {
-
-        if (username == null || username.trim().isEmpty()) {
-            return "Username tidak boleh kosong";
-        }
-
-        if (email == null || email.trim().isEmpty()) {
-            return "Email tidak boleh kosong";
         }
 
         if (password == null || password.trim().isEmpty()) {
-            return "Password tidak boleh kosong";
+            return null;
         }
 
-        try {
-            String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-            boolean emailValid = email.matches(emailRegex);
-            boolean passwordValid = password.length() >= 8;
+        return userService.login(
+                usernameOrEmail.trim(),
+                password
+        );
+    }
 
-            // FIX: Validasi terpisah biar jelas
-            if (!emailValid) {
-                return "Format email tidak valid";
-            }
+    // ==========================
+    // REGISTER
+    // ==========================
+    public String registerUser(String username,
+                               String email,
+                               String password) {
 
-            if (!passwordValid) {
-                return "Password minimal 8 karakter";
-            }
+        username = username == null ? "" : username.trim();
+        email = email == null ? "" : email.trim();
+        password = password == null ? "" : password;
 
-        } catch (Exception e) {
-            return e.getMessage();
+        // Username
+        if (username.isEmpty()) {
+            return "Username tidak boleh kosong.";
         }
 
-        UserModel newUser = new UserModel();
-        newUser.setUsername(username.trim());
-        newUser.setEmail(email.trim());
-        newUser.setPassword(password); // FIX: Sebaiknya hash password di service
+        if (username.length() < 3) {
+            return "Username minimal 3 karakter.";
+        }
 
-        boolean sukses = userService.register(newUser);
+        // Email
+        if (email.isEmpty()) {
+            return "Email tidak boleh kosong.";
+        }
 
-        if (sukses) {
+        String emailRegex =
+                "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
+        if (!email.matches(emailRegex)) {
+            return "Format email tidak valid.";
+        }
+
+        // Password
+        if (password.isEmpty()) {
+            return "Password tidak boleh kosong.";
+        }
+
+        if (password.length() < 8) {
+            return "Password minimal 8 karakter.";
+        }
+
+        // Cek Username
+        if (userService.isUsernameExists(username)) {
+            return "Username sudah digunakan.";
+        }
+
+        // Cek Email
+        if (userService.isEmailExists(email)) {
+            return "Email sudah digunakan.";
+        }
+
+        UserModel user = new UserModel(
+                0,
+                username,
+                email,
+                password
+        );
+
+        boolean success = userService.register(user);
+
+        if (success) {
             return "SUCCESS";
         }
 
-        return "Registrasi gagal";
+        return "Registrasi gagal.";
     }
 
+    // ==========================
+    // GET ALL USER
+    // ==========================
     public List<Object[]> getAllUsers() {
-        List<Object[]> dataTabel = new ArrayList<>();
 
-        List<UserModel> userList = userService.getAllUsers();
+        List<Object[]> tableData = new ArrayList<>();
 
-        if (userList != null && !userList.isEmpty()) { // FIX: Cek juga apakah kosong
-            for (UserModel user : userList) {
-                Object[] row = new Object[]{
-                    user.getIdUser(),
-                    user.getUsername(),
-                    user.getEmail(),
-                    user.getPassword()
-                };
-                dataTabel.add(row);
-            }
+        List<UserModel> users = userService.getAllUsers();
+
+        for (UserModel user : users) {
+
+            tableData.add(new Object[]{
+                user.getIdUser(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPassword()
+            });
+
         }
 
-        return dataTabel;
+        return tableData;
     }
+
+    // ==========================
+    // UPDATE USER
+    // ==========================
+    public boolean updateUser(UserModel user) {
+
+        if (user == null) {
+            return false;
+        }
+
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            return false;
+        }
+
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+            return false;
+        }
+
+        if (user.getPassword() == null || user.getPassword().length() < 8) {
+            return false;
+        }
+
+        return userService.updateUser(user);
+    }
+
+    // ==========================
+    // DELETE USER
+    // ==========================
+    public boolean deleteUser(int idUser) {
+
+        if (idUser <= 0) {
+            return false;
+        }
+
+        return userService.deleteUser(idUser);
+    }
+
 }

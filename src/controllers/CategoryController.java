@@ -2,106 +2,119 @@ package controllers;
 
 import model.CategoryModel;
 import service.CategoryService;
+
 import java.util.List;
 
 public class CategoryController {
 
     private final CategoryService service = new CategoryService();
 
-    // ========== SIMPAN / TAMBAH DENGAN VALIDASI ==========
+    // ==========================
+    // CREATE
+    // ==========================
     public boolean simpan(CategoryModel category) {
-        // VALIDASI 1: Cek null
-        if (category == null) {
-            System.out.println("Error: Category tidak boleh null");
+
+        if (!isValidCategory(category)) {
             return false;
         }
 
-        // VALIDASI 2: Cek nama category kosong
-        String nama = category.getNamaCategory();
-        if (nama == null || nama.trim().isEmpty()) {
-            System.out.println("Error: Nama Category tidak boleh kosong");
-            return false;
-        }
-
-        // VALIDASI 3: Cek tipe kosong
-        String tipe = category.getTipe();
-        if (tipe == null || tipe.trim().isEmpty()) {
-            System.out.println("Error: Tipe Category tidak boleh kosong");
-            return false;
-        }
-
-        // VALIDASI 4: Cek tipe harus "Pemasukan" atau "Pengeluaran"
-        if (!tipe.equalsIgnoreCase("Pemasukan") && !tipe.equalsIgnoreCase("Pengeluaran")) {
-            System.out.println("Error: Tipe harus 'Pemasukan' atau 'Pengeluaran'");
-            return false;
-        }
-
-        // VALIDASI 5: Cek panjang nama minimal 3 karakter
-        if (nama.trim().length() < 3) {
-            System.out.println("Error: Nama Category minimal 3 karakter");
-            return false;
-        }
-
-        // Bersihkan data sebelum disimpan
-        category.setNamaCategory(nama.trim());
-        category.setTipe(tipe.trim());
+        category.setNamaCategory(category.getNamaCategory().trim());
+        category.setTipe(category.getTipe().trim());
 
         return service.tambahCategory(category);
+
     }
 
-    // ========== HAPUS DENGAN VALIDASI ==========
-    public boolean hapus(int idCategory) {
-        // VALIDASI: ID harus lebih dari 0
+    // ==========================
+    // UPDATE
+    // ==========================
+    public boolean editCategory(int idCategory,
+                                String namaCategory,
+                                String tipe) {
+
         if (idCategory <= 0) {
-            System.out.println("Error: ID Category tidak valid");
+            return false;
+        }
+
+        CategoryModel category = new CategoryModel(
+                idCategory,
+                namaCategory,
+                tipe
+        );
+
+        if (!isValidCategory(category)) {
+            return false;
+        }
+
+        category.setNamaCategory(category.getNamaCategory().trim());
+        category.setTipe(category.getTipe().trim());
+
+        return service.updateCategory(category);
+
+    }
+
+    // ==========================
+    // DELETE
+    // ==========================
+    public boolean hapus(int idCategory) {
+
+        if (idCategory <= 0) {
             return false;
         }
 
         return service.hapusCategory(idCategory);
+
     }
 
-    // ========== AMBIL SEMUA CATEGORY ==========
+    // ==========================
+    // READ
+    // ==========================
     public List<Object[]> getAllCategories() {
+
         return service.getAllCategories();
+
     }
 
-    // ========== EDIT CATEGORY DENGAN VALIDASI ==========
-    public boolean editCategory(int idCategory, String namaCategory, String tipe) {
-        // VALIDASI 1: Cek ID valid
+    // ==========================
+    // GET BY ID
+    // ==========================
+    public CategoryModel getCategoryById(int idCategory) {
+
         if (idCategory <= 0) {
-            System.out.println("Error: ID Category tidak valid");
-            return false;
+            return null;
         }
 
-        // VALIDASI 2: Cek nama category kosong
-        if (namaCategory == null || namaCategory.trim().isEmpty()) {
-            System.out.println("Error: Nama Category tidak boleh kosong");
-            return false;
-        }
+        return service.getCategoryById(idCategory);
 
-        // VALIDASI 3: Cek tipe kosong
-        if (tipe == null || tipe.trim().isEmpty()) {
-            System.out.println("Error: Tipe Category tidak boleh kosong");
-            return false;
-        }
-
-        // VALIDASI 4: Cek tipe harus "Pemasukan" atau "Pengeluaran"
-        if (!tipe.equalsIgnoreCase("Pemasukan") && !tipe.equalsIgnoreCase("Pengeluaran")) {
-            System.out.println("Error: Tipe harus 'Pemasukan' atau 'Pengeluaran'");
-            return false;
-        }
-
-        // VALIDASI 5: Cek panjang nama minimal 3 karakter
-        if (namaCategory.trim().length() < 3) {
-            System.out.println("Error: Nama Category minimal 3 karakter");
-            return false;
-        }
-
-        CategoryModel category = new CategoryModel();
-        category.setIdCategory(idCategory);
-        category.setNamaCategory(namaCategory.trim());
-        category.setTipe(tipe.trim());
-
-        return service.updateCategory(category);
     }
+
+    // ==========================
+    // VALIDATION
+    // ==========================
+    private boolean isValidCategory(CategoryModel category) {
+
+        if (category == null) {
+            return false;
+        }
+
+        String nama = category.getNamaCategory();
+        String tipe = category.getTipe();
+
+        if (nama == null || nama.trim().isEmpty()) {
+            return false;
+        }
+
+        if (nama.trim().length() < 3) {
+            return false;
+        }
+
+        if (tipe == null || tipe.trim().isEmpty()) {
+            return false;
+        }
+
+        return tipe.equalsIgnoreCase("Pemasukan")
+                || tipe.equalsIgnoreCase("Pengeluaran");
+
+    }
+
 }
